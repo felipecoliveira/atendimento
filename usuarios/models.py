@@ -92,7 +92,7 @@ class UsuarioExterno(AbstractUsuario):
 
     class Meta:
         verbose_name = _('Usuário Externo')
-        verbose_name_plural = _('Usuários Externo')
+        verbose_name_plural = _('Usuários Externos')
 
     def __str__(self):
         return '%s - Habilitado: %s' % (self.nome_completo, self.habilitado)
@@ -106,7 +106,7 @@ class UsuarioInterno(AbstractUsuario):
 
     class Meta:
         verbose_name = _('Usuário Interno')
-        verbose_name_plural = _('Usuários Interno')
+        verbose_name_plural = _('Usuários Internos')
 
     def __str__(self):
         return self.nome_completo

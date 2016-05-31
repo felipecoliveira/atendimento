@@ -19,7 +19,7 @@ UsuarioExterno:
   - cargo
   - nome_completo:10 sexo
   - cpf rg
-  - emdereco telefone
+  - endereco telefone
   - casa_legislativa
 
 UsuarioInterno:
@@ -30,4 +30,4 @@ UsuarioInterno:
   - cargo
   - nome_completo:10 sexo
   - cpf rg
-  - emdereco telefone
+  - endereco telefone
