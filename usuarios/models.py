@@ -20,7 +20,7 @@ class CasaLegislativa(models.Model):
     endereco_web = models.URLField(
         max_length=100, blank=True, verbose_name=_('HomePage'))
     email = models.EmailField(
-        max_length=100, blank=True, verbose_name=_('E-mail'))
+        max_length=100, verbose_name=_('E-mail'))
 
     class Meta:
         verbose_name = _('Casa Legislativa')
