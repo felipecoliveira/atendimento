@@ -21,6 +21,6 @@ import usuarios.urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', include(servicos.urls)),
+    url(r'^servicos', include(servicos.urls)),
     url(r'usuarios', include(usuarios.urls)),
 ]
