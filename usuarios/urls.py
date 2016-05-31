@@ -1,13 +1,12 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
+from usuarios.views import UsuarioExternoCrud
 
-from . import views
-from .forms import LoginForm
+from .apps import AppConfig
 
-from django.contrib.auth.views import login, logout
-
+app_name = AppConfig.name
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^usuario/', include(UsuarioExternoCrud.get_urls())),
     url(r'^login/$', login, {
         'template_name': 'usuarios/login.html',
         'authentication_form': LoginForm},

@@ -22,7 +22,7 @@ import usuarios.urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name='index.html')),
+    url(r'', TemplateView.as_view(template_name='index.html')),
     url(r'servicos', include(servicos.urls)),
-    url(r'', include(usuarios.urls)),
+    url(r'usuarios', include(usuarios.urls)),
 ]

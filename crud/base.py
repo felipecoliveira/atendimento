@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from braces.views import FormMessagesMixin
 from django.conf.urls import url
 from django.core.urlresolvers import reverse
@@ -197,7 +198,7 @@ class Crud:
 
         CrudListView = _add_base(cls.ListView)
         CrudCreateView = _add_base(cls.CreateView)
-        CrudDetailView = _add_base(cls.DetailView)crud
+        CrudDetailView = _add_base(cls.DetailView)
         CrudUpdateView = _add_base(cls.UpdateView)
         CrudDeleteView = _add_base(cls.DeleteView)
 
