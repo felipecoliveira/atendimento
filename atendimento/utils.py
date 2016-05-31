@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext_lazy as _
 
 UF = [
     ('AC', 'Acre'),
@@ -29,3 +30,7 @@ UF = [
     ('TO', 'Tocantins'),
     ('EX', 'Exterior'),
 ]
+
+YES_NO_CHOICES = [(True, _('Sim')), (False, _('Não'))]
+
+SEXO_CHOICES = [('M', _('Masculino')), ('F', _('Feminino'))]
