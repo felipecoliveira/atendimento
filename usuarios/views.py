@@ -1,7 +1,8 @@
 import crud.base
 from crud.base import Crud
-from .models import UsuarioExterno
+
 from .forms import UsuarioExternoForm
+from .models import UsuarioExterno
 
 
 class UsuarioExternoCrud(Crud):
@@ -13,6 +14,3 @@ class UsuarioExternoCrud(Crud):
 
     class UpdateView(crud.base.CrudUpdateView):
         form_class = UsuarioExternoForm
-
-# def index(request):
-    # return HttpResponse("Hello, world. You're at the polls index.")

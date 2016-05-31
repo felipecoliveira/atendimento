@@ -11,8 +11,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
-import os
-
 from decouple import config
 from dj_database_url import parse as db_url
 from unipath import Path

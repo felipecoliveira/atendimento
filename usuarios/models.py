@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -38,8 +37,6 @@ class Subsecretaria(models.Model):
 
     class Meta:
         ordering = ('nome', 'sigla')
-
-    class Meta:
         verbose_name = _('Subsecretaria')
         verbose_name_plural = _('Subsecretarias')
 
