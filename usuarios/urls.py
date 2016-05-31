@@ -6,10 +6,10 @@ from .apps import AppConfig
 app_name = AppConfig.name
 
 urlpatterns = [
-    url(r'^usuario/', include(UsuarioExternoCrud.get_urls())),
     url(r'^login/$', login, {
         'template_name': 'usuarios/login.html',
         'authentication_form': LoginForm},
         name='login'),
     url(r'^logout/$', logout, {'next_page': '/login'}, name='logout')
+    url(r'^usuario-externo/', include(UsuarioExternoCrud.get_urls())),
 ]
