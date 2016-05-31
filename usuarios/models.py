@@ -20,7 +20,7 @@ class CasaLegislativa(models.Model):
     endereco_web = models.URLField(
         max_length=100, blank=True, verbose_name=_('HomePage'))
     email = models.EmailField(
-        max_length=100, verbose_name=_('E-mail'))
+        max_length=100, blank=True, verbose_name=_('E-mail'))
 
     class Meta:
         verbose_name = _('Casa Legislativa')
@@ -68,9 +68,7 @@ class AbstractUsuario(models.Model):
         blank=True,
         null=True)
     email = models.EmailField(
-        verbose_name=_('Email'),
-        blank=True,
-        null=True)
+        verbose_name=_('Email'))
     endereco = models.CharField(verbose_name=_('Endereço'), max_length=256)
     telefone = models.CharField(verbose_name=_('Telefone'), max_length=20)
 
