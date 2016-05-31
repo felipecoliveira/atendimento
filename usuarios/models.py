@@ -81,7 +81,8 @@ class AbstractUsuario(models.Model):
 
 
 class UsuarioExterno(AbstractUsuario):
-    casa_legislativa = models.ManyToManyField(CasaLegislativa,
+    casa_legislativa = models.ManyToManyField(
+        CasaLegislativa,
         verbose_name=_('Casa Legislativa'))
     habilitado = models.CharField(
         verbose_name=_('Habilitado?'),
@@ -97,7 +98,8 @@ class UsuarioExterno(AbstractUsuario):
 
 class UsuarioInterno(AbstractUsuario):
     matricula = models.CharField(verbose_name=_('Matrícula'), max_length=25)
-    subsecretaria = models.ForeignKey(Subsecretaria,
+    subsecretaria = models.ForeignKey(
+        Subsecretaria,
         verbose_name=_('Subsecretaria'))
 
     class Meta:

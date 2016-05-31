@@ -1,0 +1,33 @@
+
+CasaLegislativa:
+  Casa Legislativa:
+  - sigla:4 nome
+  - endereco:8 cep
+  - municipio:8 uf
+  - email
+  - telefone
+  - endereco_web
+
+Subsecretaria:
+  Subsecretaria:
+  - nome:8 sigla
+
+UsuarioExterno:
+  Usuário:
+  - username
+  - email
+  - cargo
+  - nome_completo:10 sexo
+  - cpf rg
+  - emdereco telefone
+  - casa_legislativa
+
+UsuarioInterno:
+  Usuário:
+  - matricula
+  - subsecretaria
+  - email
+  - cargo
+  - nome_completo:10 sexo
+  - cpf rg
+  - emdereco telefone
