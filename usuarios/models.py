@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -85,6 +86,7 @@ class UsuarioExterno(AbstractUsuario):
         CasaLegislativa,
         verbose_name=_('Casa Legislativa'))
     habilitado = models.CharField(
+        max_length=3,
         verbose_name=_('Habilitado?'),
         choices=YES_NO_CHOICES)
 
