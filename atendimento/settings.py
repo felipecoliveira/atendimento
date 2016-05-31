@@ -38,7 +38,6 @@ ATENDIMENTO_APPS = [
     ]
 
 INSTALLED_APPS = [
-    'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -109,20 +108,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.\
-        UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.\
-        MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.\
-        CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.\
-        NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
@@ -162,8 +157,6 @@ STATICFILES_FINDERS = (
 MEDIA_ROOT = BASE_DIR.child("media")
 MEDIA_URL = '/media/'
 
-DAB_FIELD_RENDERER = \
-    'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap3'
 CRISPY_FAIL_SILENTLY = not DEBUG
@@ -177,7 +170,6 @@ BOWER_INSTALLED_APPS = (
     'jquery-runner#2.3.3',
     'jQuery-Mask-Plugin#1.13.4',
     'jsdiff#2.2.1',
-    'https://github.com/hoarrd/drunken-parrot-flat-ui.git',
 )
 
 # Additional search paths for SASS files when using the @import statement

@@ -16,7 +16,7 @@ class Servico(models.Model):
 
     usuario = models.ForeignKey(UsuarioExterno)
     titulo = models.CharField(verbose_name=_('Título'), max_length=100)
-    descricao = models.models.TextField(verbose_name=_('Descrição'))
+    descricao = models.TextField(verbose_name=_('Descrição'))
 
     class Meta:
         verbose_name = _('Serviço')
