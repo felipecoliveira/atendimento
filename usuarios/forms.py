@@ -21,12 +21,6 @@ class LoginForm(AuthenticationForm):
             attrs={'class': 'form-control', 'name': 'password'}))
 
 
-def DV_maker(v):
-    if v >= 2:
-        return 11 - v
-    return 0
-
-
 class UsuarioExternoForm(ModelForm):
 
     class Meta:
@@ -41,6 +35,11 @@ class UsuarioExternoForm(ModelForm):
     }
 
     def validate_CPF(self, value):
+
+        def DV_maker(v):
+            if v >= 2:
+                return 11 - v
+            return 0
 
         if value in EMPTY_VALUES:
             return u''

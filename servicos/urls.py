@@ -1,7 +1,8 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 
-from . import views
+from servicos.views import TicketCrud, SistemaCrud
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'', include(SistemaCrud.get_urls())),
+    url(r'', include(TicketCrud.get_urls())),
 ]

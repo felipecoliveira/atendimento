@@ -1,5 +1,13 @@
 
-Servico:
-  Serviço:
-  - titulo
-  - descricao
+Sistema:
+  Sistema:
+  - sigla
+  - nome
+
+Ticket:
+  Ticket:
+    - codigo
+    - usuario
+    - sistema
+    - titulo
+    - resumo
