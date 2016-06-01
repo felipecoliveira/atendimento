@@ -1,0 +1,165 @@
+{% load i18n staticfiles sass_tags %}
+<!DOCTYPE html>
+<!--[if IE 8]> <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="pt-br">
+<!--<![endif]-->
+
+  <head>
+    <meta charset="utf-8">
+    <title>Sistema de Atendimento</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head_content %}
+      <link rel="icon" href="{% static 'img/favicon.ico' %}"  type="image/png" >
+
+      {# Styles #}
+      <link rel="stylesheet" href="{% static 'components-font-awesome/css/font-awesome.css' %}">
+      <link rel="stylesheet" href="{% sass_src 'bootstrap-sass/assets/stylesheets/_bootstrap.scss' %}" type="text/css">
+      <link rel="stylesheet" href="{% sass_src 'styles/app.scss' %}" type="text/css">
+
+      <link rel="stylesheet" href="{% static 'jquery-ui/themes/cupertino/jquery-ui.min.css' %}">
+
+      {# Scripts #}
+    {% endblock head_content %}
+  </head>
+
+  {% block navigation %}
+
+      <nav class="navbar navbar-inverse navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right" id="autenticacao">
+            {% if not user.is_authenticated %}
+              <li><a href="{% url 'usuarios:login' %}">Login</a></li>
+              <li><a href="{% url 'usuarios:usuarioexterno_create' %}">Cadastre-se</a></li>
+            {% else %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  {% if user.first_name or user.last_name %}
+                    {{ user.get_full_name }}
+                  {% else %}
+                    {{ user.username }}
+                  {% endif %}
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="{% url 'usuarios:logout' %}">Sair</a></li>
+            {% endif %}
+                </ul>
+              </li>
+            </ul>
+
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+      {% endblock navigation %}
+
+  <body>
+    <div class="page fadein">
+      {# Header #}
+      {% block main_header %}
+        <header class="masthead">
+          <div class="container">
+            <div class="navbar-header">
+                <span class="vcenter">
+                  <br/>Sistema de Atendimento
+                </span>
+              </a>
+            </div>
+          </div>
+        </header>
+      {% endblock main_header %}
+
+      {# Main content #}
+      {% block content_container %}
+        <main id="content" class="content page__row">
+
+          <div class="container">
+
+            {# Feedback messages #}
+            {% for message in messages %}
+              <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+                {{ message|safe }}
+              </div>
+            {% endfor %}
+
+            {# Content header #}
+            {% block base_header %}
+              <div class="clearfix">
+
+                {% block title %}
+                  <h1 class="page-header">
+                    {% if title %}
+                      {{ title|safe|linebreaksbr }}
+                    {% elif object %}
+                      {{ object|safe|linebreaksbr }}
+                    {% endif %}
+                  </h1>
+                {% endblock %}
+
+              </div>
+            {% endblock base_header %}
+
+            {# Content per se #}
+            {% block base_content %}{% endblock %}
+
+          </div>
+        </main>
+      {% endblock content_container %}
+    </div>
+
+
+      <footer id="footer" class="footer page__row">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-4">
+              <a class="footer__logo" href="#">
+                <img src="{% static 'img/logo_interlegis.png' %}" alt="{% trans 'Logo do Interlegis' %} ">
+              </a>
+              <p>
+                <small>
+                  Desenvolvido pelo <a href="#">Interlegis</a> em software livre e aberto.
+                </small>
+              </p>
+            </div>
+            <div class="col-md-4">
+              <a class="footer__logo" href="#">
+                <img src="{% static 'img/logo_cc.png' %}" alt="{% trans 'Logo do Creative Commons BY SA' %}">
+              </a>
+              <p>
+                <small>
+                  Conteúdo e dados sob licença <a href="#">Creative Commons</a> 4.0 <a href="#">Atribuir Fonte - Compartilhar Igual</a>
+                </small>
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    {% block foot_js %}
+      <!-- Bootstrap core JavaScript ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'bootstrap-sass/assets/javascripts/bootstrap.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+      <script type="text/javascript" src="{% static 'jquery-ui/ui/i18n/datepicker-pt-BR.js' %}"></script>
+      <script type="text/javascript" src="{% static 'jquery-mask-plugin/dist/jquery.mask.js' %}"></script>
+      <script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+
+      {% block extra_js %}{% endblock %}
+
+    {% endblock foot_js %}
+  </body>
+</html>
