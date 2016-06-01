@@ -30,13 +30,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/?next='
 
 # Application definition
 
 ATENDIMENTO_APPS = [
-        'servicos',
-        'usuarios',
-    ]
+    'servicos',
+    'usuarios',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',

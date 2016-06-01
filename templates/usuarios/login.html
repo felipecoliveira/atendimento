@@ -1,19 +1,7 @@
+{% extends "base.html" %}
+{% load i18n %}
 
-  <!-- O bloco comentado é para ser implementado após as autorizacoes -->
-  <!-- {% if next %}
-    {% if user.is_authenticated %}
-      <p>Você não tem acesso a esta página. Se quiser continuar, faça o Login.</p>
-      
-      {% else %}
-        <p>Por favor, faça o Login para acessar esta página.</p>
-      {% endif %}
-
-  {% endif %} -->
-
-
-<!DOCTYPE html>
-<html>
-
+{% block base_content %}
 <body>
   <div class="container">
       <div class="row">
@@ -45,7 +33,7 @@
                           </p>
                           <p class="bs-component">
                               <center>
-                                  <input class="btn btn-success btn-sm" type="submit" value="login" />
+                                  <input class="btn btn-success btn-sm" type="submit" value="Entrar" />
                               </center>
                           </p>
                           <input type="hidden" name="next" value="{{ next }}" />
@@ -63,5 +51,6 @@
   {% endif %}
   </script>
 
+{% endblock %}
 
 </html>
