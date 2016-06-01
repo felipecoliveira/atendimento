@@ -24,12 +24,12 @@
                  <span class="icon-bar"></span>
                  <span class="icon-bar"></span>
              </button>
-             <a class="brand" href="/">Sistema de Atedimento</a>
+             <!-- <a class="brand" href="/">Sistema de Atedimento</a> -->
 
              <div class="nav-collapse collapse">
                  <ul class="nav pull-right">
                      {% if user.is_authenticated %}
-                      <li class="navbar-text">{{ user.username }}!</li>
+                      <li><a href="">{{ user.username }}</a></li>
                       <li><a href="{% url 'usuarios:logout' %}">Sair</a></li>
                      {% else %}
                       <li><a href="{% url 'usuarios:usuarioexterno_create' %}">Cadastre-se</a></li>
