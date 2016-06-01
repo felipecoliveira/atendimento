@@ -15,6 +15,7 @@ class TicketCrud(Crud):
     class UpdateView(crud.base.CrudUpdateView):
         form_class = TicketForm
 
+
 class SistemaCrud(Crud):
     model = Sistema
     help_path = ''

@@ -28,19 +28,20 @@
 
              <div class="nav-collapse collapse">
                  <ul class="nav pull-right">
-                     {% if user.is_authenticated %}
-                      <li><a href="">{{ user.username }}</a></li>
-                      <li><a href="{% url 'usuarios:logout' %}">Sair</a></li>
-                     {% else %}
-                      <li><a href="{% url 'usuarios:usuarioexterno_create' %}">Cadastre-se</a></li>
-                      <li><a href="{% url 'usuarios:login' %}">Login</a></li>
-                     {% endif %}
+                   {% if user.is_authenticated %}
+                    <li><a href="">{{ user.username }}</a></li>
+                    <li><a href="{% url 'usuarios:logout' %}">Sair</a></li>
+                   {% else %}
+                    <li><a href="{% url 'usuarios:usuarioexterno_create' %}">Cadastre-se</a></li>
+                    <li><a href="{% url 'usuarios:login' %}">Login</a></li>
+                   {% endif %}
                  </ul>
                  <ul class="nav">
-                     {% if user.is_authenticated %}
-                      <li><a href="">Ticket</a></li>
-                     {% endif %}
-                     <li><a href="">Contato</a></li>
+                   {% if user.is_authenticated %}
+                    <li><a href="{% url 'servicos:ticket_list' %}">Ticket</a></li>
+                    <li><a href="{% url 'servicos:sistema_list' %}">Sistema</a></li>
+                   {% endif %}
+                   <li><a href="">Contato</a></li>
                  </ul>
              </div>
          </div>
