@@ -44,8 +44,10 @@ class Subsecretaria(models.Model):
         return '[%s] %s' % (self.sigla, self.nome)
 
 
-class AbstractUsuario(models.Model):
-
+class UsuarioExterno(models.Model):
+    '''
+        Usuário cadastrado via web
+    '''
     username = models.CharField(
         verbose_name=_('Nome de Usuário'),
         max_length=50)
@@ -71,12 +73,6 @@ class AbstractUsuario(models.Model):
         verbose_name=_('Email'))
     endereco = models.CharField(verbose_name=_('Endereço'), max_length=256)
     telefone = models.CharField(verbose_name=_('Telefone'), max_length=20)
-
-    class Meta:
-        abstract = True
-
-
-class UsuarioExterno(AbstractUsuario):
     casa_legislativa = models.ManyToManyField(
         CasaLegislativa,
         verbose_name=_('Casa Legislativa'))
@@ -91,17 +87,3 @@ class UsuarioExterno(AbstractUsuario):
 
     def __str__(self):
         return '%s - Habilitado: %s' % (self.nome_completo, self.habilitado)
-
-
-class UsuarioInterno(AbstractUsuario):
-    matricula = models.CharField(verbose_name=_('Matrícula'), max_length=25)
-    subsecretaria = models.ForeignKey(
-        Subsecretaria,
-        verbose_name=_('Subsecretaria'))
-
-    class Meta:
-        verbose_name = _('Usuário Interno')
-        verbose_name_plural = _('Usuários Internos')
-
-    def __str__(self):
-        return self.nome_completo
