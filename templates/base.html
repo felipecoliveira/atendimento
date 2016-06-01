@@ -39,6 +39,7 @@
             <ul class="nav navbar-nav navbar-right" id="autenticacao">
             {% if not user.is_authenticated %}
               <li><a href="{% url 'usuarios:login' %}">Login</a></li>
+              <li><a href="{% url 'usuarios:usuarioexterno_create' %}">Cadastre-se</a></li>
             {% else %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
