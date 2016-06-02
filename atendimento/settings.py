@@ -49,10 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # extra apps
-    'django_extensions',
-    'djangobower',
     'bootstrap3',
+    'captcha',
     'crispy_forms',
+    'djangobower',
+    'django_extensions',
     'floppyforms',
     'sass_processor',
 ] + ATENDIMENTO_APPS
@@ -87,6 +88,7 @@ TEMPLATES = [
                 'django.core.context_processors.static',
                 'django.contrib.messages.context_processors.messages',
                 'django.contrib.messages.context_processors.messages',
+                'atendimento.context_processors.usuario_context'
             ],
         },
     },
@@ -124,6 +126,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# captcha config
+CAPTCHA_IMAGE_SIZE=(130,30)
+CAPTCHA_FONT_SIZE=30
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

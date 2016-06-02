@@ -12,22 +12,20 @@ Subsecretaria:
   Subsecretaria:
   - nome:8 sigla
 
-UsuarioExterno:
+Usuario:
   Usuário:
-  - username
-  - email
-  - cargo
-  - nome_completo:10 sexo
-  - cpf rg
-  - endereco telefone
-  - casa_legislativa
+  - username nome_completo
+  - password password_confirm
+  - email email_confirm
+  - captcha
 
-UsuarioInterno:
-  Usuário:
-  - matricula
-  - subsecretaria
-  - email
-  - cargo
-  - nome_completo:10 sexo
-  - cpf rg
-  - endereco telefone
+UsuarioDetail:
+  Perfil:
+  - nome_completo email
+
+HabilitarEdit:
+  Editar Usuário:
+  - username nome_completo
+  - password password_confirm
+  - email email_confirm
+  - captcha
