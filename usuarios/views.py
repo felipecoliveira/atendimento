@@ -50,8 +50,11 @@ class HabilitarEditView(FormView):
     template_name = "crud/form.html"
 
     def get(self, request, *args, **kwargs):
-        form = HabilitarEditForm()
         context = {}
+
+        usuario = Usuario.objects.get(pk=self.kwargs['pk'])
+        form = HabilitarEditForm(instance=usuario)
+
         context['pk'] = self.kwargs['pk']
         context['form'] = form
         return self.render_to_response(context)

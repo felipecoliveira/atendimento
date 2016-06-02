@@ -17,7 +17,7 @@ class Sistema(models.Model):
         verbose_name_plural = _('Sistemas')
 
     def __str__(self):
-        return "%s - %s" % (sigla, nome)
+        return "%s - %s" % (self.sigla, self.nome)
 
 
 class Ticket(models.Model):
@@ -28,9 +28,6 @@ class Ticket(models.Model):
     resumo = models.CharField(verbose_name=_('Resumo'), max_length=50)
     data_criacao = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('Data de criação'))
-    data_fechamento = models.DateTimeField(blank=True,
-                                           null=True,
-                                           verbose_name=_('Data de criação'))
     descricao = models.TextField(blank=True,
                                  null=True,
                                  verbose_name=_('Descrição'))
@@ -40,4 +37,4 @@ class Ticket(models.Model):
         verbose_name_plural = _('Tickets')
 
     def __str__(self):
-        return "%s - %s" % (numero, resumo)
+        return "%s - %s" % (self.codigo, self.resumo)

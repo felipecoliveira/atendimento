@@ -56,7 +56,9 @@ class Usuario(models.Model):
     nome_completo = models.CharField(
         verbose_name=_('Nome Completo'),
         max_length=128)
-    data_criacao = models.DateTimeField(_('Data Criação'), default=timezone.now)
+    data_criacao = models.DateTimeField(
+        _('Data Criação'),
+        default=timezone.now)
     data_ultima_atualizacao = models.DateTimeField(default=timezone.now)
     email = models.EmailField(
         unique=True,
@@ -72,4 +74,4 @@ class Usuario(models.Model):
         verbose_name_plural = _('Usuários')
 
     def __str__(self):
-        return 'Nome de Usuário: %s' % self.username
+        return self.username

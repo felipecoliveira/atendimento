@@ -32,7 +32,7 @@ UF = [
     ('EX', 'Exterior'),
 ]
 
-YES_NO_CHOICES = [(True, _('Sim')), (False, _('Não'))]
+YES_NO_CHOICES = [(False, _('Não')), (True, _('Sim'))]
 
 SEXO_CHOICES = [('M', _('Masculino')), ('F', _('Feminino'))]
 

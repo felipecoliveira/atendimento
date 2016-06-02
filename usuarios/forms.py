@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Fieldset, Layout
+from crispy_forms.layout import Fieldset, Layout, Submit, Button
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.validators import EMPTY_VALUES
 from django.forms import ModelForm, ValidationError
@@ -15,6 +15,7 @@ from captcha.fields import CaptchaField
 from datetime import datetime
 import crispy_layout_mixin
 from crispy_layout_mixin import form_actions
+from atendimento.utils import YES_NO_CHOICES
 
 
 class LoginForm(AuthenticationForm):
@@ -118,30 +119,30 @@ class UsuarioEditForm(UsuarioForm):
 
 
 class HabilitarEditForm(ModelForm):
-    password = forms.CharField(
-        max_length=20,
-        label=_('Senha'),
-        widget=forms.PasswordInput())
+    habilitado = forms.ChoiceField(
+        widget=forms.Select(),
+        required=True,
+        choices=YES_NO_CHOICES)
 
     class Meta:
         model = Usuario
-        fields = ['nome_completo', 'username', 'password', 'email',
-                  'habilitado']
+        fields = ['nome_completo', 'username', 'email', 'habilitado']
+        widgets = {
+            'username': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'nome_completo': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'email': forms.TextInput(attrs={'readonly': 'readonly'})
+        }
 
     def __init__(self, *args, **kwargs):
         super(HabilitarEditForm, self).__init__(*args, **kwargs)
         row1 = crispy_layout_mixin.to_row(
             [('username', 4),
-             ('password', 4),
+             ('nome_completo', 4),
              ('email', 4)])
-        row2 = crispy_layout_mixin.to_row(
-            [('nome_completo', 8),
-             ('habilitado', 4)])
-        # import ipdb; ipdb.set_trace()
-
+        row2 = crispy_layout_mixin.to_row([('habilitado', 12)])
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(_('Editar usuário'),
                      row1, row2,
-                     form_actions(save_label='Salvar'))
+                     form_actions(more=[Submit('Cancelar', 'Cancelar', style='background-color:black; color:white;')]))
         )
