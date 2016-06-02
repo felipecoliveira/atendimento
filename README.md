@@ -1,6 +1,12 @@
 # atendimento
 Sistema de Atendimento a Usuários Externos
 
+
+* **Ubuntu**:
+
+    sudo apt-get -y install libz-dev libxft-dev libjpeg62 libjpeg-dev libfreetype6-dev python-dev
+
+  
 * **Configurar Postgresql**:
 
   * Acessar Postrgresql para criar o banco ``atendimento`` com a role ``atendimento``::
