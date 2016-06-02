@@ -19,6 +19,5 @@ Usuario:
   - email email_confirm
 
 UsuarioDetail:
-  Usuario:
-  - nome_completo
-  - username email
+  Perfil:
+  - nome_completo email

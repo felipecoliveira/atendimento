@@ -6,3 +6,11 @@
     <a href="{{ view.update_url }}" class="btn btn-default">{% trans 'Editar Perfil' %}</a>
   </div>
 {% endblock actions %}
+
+{% block msg %}
+  {% if not usuario.habilitado %}
+    <h4><font face="verdana" color="red"><p>Esse perfil ainda <strong>não está habilitado</strong> para uso das funcionalidades.</p></font></h4>
+  {% else %}
+    <h4><font face="verdana" color="green"><p>Esse perfil já <strong>está habilitado</strong> para uso das funcionalidades.</p></font></h4>
+  {% endif %}
+{% endblock msg %}

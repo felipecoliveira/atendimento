@@ -72,4 +72,4 @@ class Usuario(models.Model):
         verbose_name_plural = _('Usuários')
 
     def __str__(self):
-        return '%s - Habilitado: %s' % (self.nome_completo, self.habilitado)
+        return 'Nome de Usuário: %s' % self.username
