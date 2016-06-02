@@ -29,7 +29,7 @@
              <div class="nav-collapse collapse">
                  <ul class="nav pull-right">
                    {% if user.is_authenticated %}
-                    <li><a href="{% url 'usuarios:usuario_detail' user.pk %}">{{ user.username }}</a></li>
+                    <li><a href="{% url 'usuarios:usuario_detail' usuario_pk %}">{{ user.username }}</a></li>
                     <li><a href="{% url 'usuarios:logout' %}">Sair</a></li>
                    {% else %}
                     <li><a href="{% url 'usuarios:usuario_create' %}">Cadastre-se</a></li>
@@ -105,8 +105,6 @@
         </main>
       {% endblock content_container %}
     {% endblock %}
-
-
     {% block foot_js %}
       <script src="{% static 'js/jquery-2.0.3.min.js' %}"></script>
       <script src="{% static 'js/bootstrap.min.js' %}"></script>

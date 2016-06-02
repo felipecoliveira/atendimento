@@ -51,6 +51,7 @@ class Usuario(models.Model):
     user = models.ForeignKey(User)
     username = models.CharField(
         verbose_name=_('Nome de Usuário'),
+        unique=True,
         max_length=50)
     nome_completo = models.CharField(
         verbose_name=_('Nome Completo'),

@@ -1,0 +1,8 @@
+{% extends "crud/detail.html" %}
+{% load i18n %}
+
+{% block actions %}
+  <div class="actions btn-group pull-right" role="group">
+    <a href="{{ view.update_url }}" class="btn btn-default">{% trans 'Editar Perfil' %}</a>
+  </div>
+{% endblock actions %}

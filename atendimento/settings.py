@@ -87,6 +87,7 @@ TEMPLATES = [
                 'django.core.context_processors.static',
                 'django.contrib.messages.context_processors.messages',
                 'django.contrib.messages.context_processors.messages',
+                'atendimento.context_processors.usuario_context'
             ],
         },
     },

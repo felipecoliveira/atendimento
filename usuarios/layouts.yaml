@@ -17,3 +17,8 @@ Usuario:
   - username password
   - email
   - nome_completo
+
+UsuarioDetail:
+  Usuario:
+  - nome_completo
+  - username email

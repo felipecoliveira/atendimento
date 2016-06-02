@@ -32,21 +32,33 @@ class UsuarioForm(ModelForm):
         model = Usuario
         fields = ['username', 'email', 'nome_completo', 'password']
 
-    # def clean_email(self):
-    #     email = self.cleaned_data['email']
-    #
-    #     return email
+    @transaction.atomic
+    def save(self, commit=False):
+        usuario = super(UsuarioForm, self).save(commit)
+
+        u = User.objects.create(username=usuario.username, email=usuario.email)
+        u.set_password(self.cleaned_data['password'])
+        u.save()
+
+        usuario.user = u
+        usuario.save()
+        return usuario
+
+
+class UsuarioEditForm(UsuarioForm):
+    class Meta:
+        model = Usuario
+        fields = ['username', 'email', 'nome_completo', 'password']
+        widgets = {'username': forms.TextInput(attrs={'readonly': 'readonly'})}
 
     @transaction.atomic
     def save(self, commit=False):
         usuario = super(UsuarioForm, self).save(commit)
 
-        u = User()
-        u.username = usuario.username
-        u.set_password(self.cleaned_data['password'])
+        u = usuario.user
         u.email = usuario.email
+        u.set_password(self.cleaned_data['password'])
         u.save()
 
-        usuario.user = u
         usuario.save()
         return usuario
