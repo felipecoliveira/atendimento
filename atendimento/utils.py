@@ -34,6 +34,11 @@ UF = [
 
 YES_NO_CHOICES = [(False, _('Não')), (True, _('Sim'))]
 
+
+def str2bool(v):
+    return v in ('Sim', 'True')
+
+
 SEXO_CHOICES = [('M', _('Masculino')), ('F', _('Feminino'))]
 
 

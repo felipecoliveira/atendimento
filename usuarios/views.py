@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 import crud.base
 from crud.base import Crud
 from django.core.urlresolvers import reverse
@@ -6,6 +6,7 @@ from .forms import UsuarioForm, UsuarioEditForm, HabilitarEditForm
 from .models import Usuario
 from django.views.generic.edit import FormMixin
 from django.views.generic import UpdateView, FormView
+from atendimento.utils import str2bool
 
 
 class UsuarioCrud(Crud):
@@ -60,8 +61,9 @@ class HabilitarEditView(FormView):
     def post(self, request, *args, **kwargs):
         form = HabilitarEditForm(request.POST)
         usuario = Usuario.objects.get(pk=self.kwargs['pk'])
-        usuario.habilitado = form.data['habilitado']
-        usuario.data_ultima_atualizacao = datetime.now()
+        usuario.habilitado = str2bool(form.data['habilitado'])
+        usuario.data_ultima_atualizacao = timezone.now()
+
         usuario.save()
         return self.form_valid(form)
 
