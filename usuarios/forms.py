@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from .models import Usuario
 from captcha.fields import CaptchaField
-
+from datetime import datetime
 
 class LoginForm(AuthenticationForm):
     username = forms.CharField(
@@ -98,5 +98,6 @@ class UsuarioEditForm(UsuarioForm):
         u.set_password(self.cleaned_data['password'])
         u.save()
 
+        usuario.data_ultima_atualizacao = datetime.now()
         usuario.save()
         return usuario
