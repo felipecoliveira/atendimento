@@ -1,4 +1,5 @@
 import re
+from django.core.exceptions import ValidationError
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
@@ -28,9 +29,39 @@ class UsuarioForm(ModelForm):
         label=_('Senha'),
         widget=forms.PasswordInput())
 
+    password_confirm = forms.CharField(
+        max_length=20,
+        label=_('Confirmar Senha'),
+        widget=forms.PasswordInput())
+
+    email_confirm = forms.CharField(
+        max_length=20,
+        label=_('Confirmar Email'))
+
     class Meta:
         model = Usuario
-        fields = ['username', 'email', 'nome_completo', 'password']
+        fields = ['username', 'email', 'nome_completo', 'password',
+                  'password_confirm', 'email_confirm']
+
+    def valida_igualdade(self, texto1, texto2, msg):
+        if texto1 != texto2:
+            raise ValidationError(msg)
+        return True
+
+    def clean(self):
+        msg = _('As senhas não conferem.')
+        self.valida_igualdade(
+            self.cleaned_data['password'],
+            self.cleaned_data['password_confirm'],
+            msg)
+
+        msg = _('Os emails não conferem.')
+        self.valida_igualdade(
+            self.cleaned_data['email'],
+            self.cleaned_data['email_confirm'],
+            msg)
+
+        return self.cleaned_data
 
     @transaction.atomic
     def save(self, commit=False):
@@ -50,6 +81,10 @@ class UsuarioEditForm(UsuarioForm):
         model = Usuario
         fields = ['username', 'email', 'nome_completo', 'password']
         widgets = {'username': forms.TextInput(attrs={'readonly': 'readonly'})}
+
+    def __init__(self, *args, **kwargs):
+        super(UsuarioEditForm, self).__init__(*args, **kwargs)
+        self.fields['email_confirm'].initial = self.instance.email
 
     @transaction.atomic
     def save(self, commit=False):

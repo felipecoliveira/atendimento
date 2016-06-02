@@ -14,9 +14,9 @@ Subsecretaria:
 
 Usuario:
   Usuário:
-  - username password
-  - email
-  - nome_completo
+  - username nome_completo
+  - password password_confirm
+  - email email_confirm
 
 UsuarioDetail:
   Usuario:
