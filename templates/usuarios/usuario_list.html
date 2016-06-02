@@ -22,7 +22,7 @@
             {% for value, href in value_list %}
               <td>
                 {% if href %}
-                <a href="{% url 'usuarios:habilitar_detail' usuario_pk %}">{{ value }}</a>
+                <a href="/habilitar{{ value_list|first|last|cut:'usuario/' }}">{{ value }}</a>
                   {% else %}
                     {{ value|safe }}
                   {% endif %}
