@@ -26,10 +26,13 @@ class UsuarioCrud(Crud):
         def layout_key(self):
             return 'UsuarioDetail'
 
-
-class HabilitarCrud(Crud):
-    model = Usuario
-    help_path = ''
-
     class BaseMixin(crud.base.CrudBaseMixin):
         list_field_names = ['nome_completo', 'habilitado']
+
+
+class HabilitarDetailView(crud.base.CrudDetailView):
+    template_name = "usuarios/habilitar_detail.html"
+
+    def get(self, request, *args, **kwargs):
+        pk = self.kwargs['pk']
+        return self.render_to_response({'pk': pk})
