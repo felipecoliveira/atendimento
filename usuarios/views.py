@@ -1,3 +1,4 @@
+from datetime import datetime
 import crud.base
 from crud.base import Crud
 from django.core.urlresolvers import reverse
@@ -42,9 +43,6 @@ class HabilitarDetailView(crud.base.CrudDetailView):
         context['usuario'] = Usuario.objects.get(pk=self.kwargs['pk'])
         return self.render_to_response(context)
 
-    def get_success_url(self):
-        return reverse('usuarios:usuario_list')
-
 
 class HabilitarEditView(FormView):
     template_name = "crud/form.html"
@@ -58,3 +56,14 @@ class HabilitarEditView(FormView):
         context['pk'] = self.kwargs['pk']
         context['form'] = form
         return self.render_to_response(context)
+
+    def post(self, request, *args, **kwargs):
+        form = HabilitarEditForm(request.POST)
+        usuario = Usuario.objects.get(pk=self.kwargs['pk'])
+        usuario.habilitado = form.data['habilitado']
+        usuario.data_ultima_atualizacao = datetime.now()
+        usuario.save()
+        return self.form_valid(form)
+
+    def get_success_url(self):
+        return reverse('usuarios:usuario_list')
