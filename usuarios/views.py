@@ -25,3 +25,11 @@ class UsuarioCrud(Crud):
         @property
         def layout_key(self):
             return 'UsuarioDetail'
+
+
+class HabilitarCrud(Crud):
+    model = Usuario
+    help_path = ''
+
+    class BaseMixin(crud.base.CrudBaseMixin):
+        list_field_names = ['nome_completo', 'habilitado']

@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.db import transaction
 from .models import Usuario
+from captcha.fields import CaptchaField
 
 
 class LoginForm(AuthenticationForm):
@@ -38,10 +39,12 @@ class UsuarioForm(ModelForm):
         max_length=20,
         label=_('Confirmar Email'))
 
+    captcha = CaptchaField()
+
     class Meta:
         model = Usuario
         fields = ['username', 'email', 'nome_completo', 'password',
-                  'password_confirm', 'email_confirm']
+                  'password_confirm', 'email_confirm', 'captcha']
 
     def valida_igualdade(self, texto1, texto2, msg):
         if texto1 != texto2:

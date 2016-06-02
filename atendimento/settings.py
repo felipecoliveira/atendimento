@@ -49,10 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # extra apps
-    'django_extensions',
-    'djangobower',
     'bootstrap3',
+    'captcha',
     'crispy_forms',
+    'djangobower',
+    'django_extensions',
     'floppyforms',
     'sass_processor',
 ] + ATENDIMENTO_APPS

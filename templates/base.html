@@ -40,6 +40,7 @@
                    {% if user.is_authenticated %}
                     <li><a href="{% url 'servicos:ticket_list' %}">Ticket</a></li>
                     <li><a href="{% url 'servicos:sistema_list' %}">Sistema</a></li>
+                    <li><a href="{% url 'usuarios:usuario_list' %}">Habilitar</a></li>
                    {% endif %}
                    <li><a href="">Contato</a></li>
                  </ul>

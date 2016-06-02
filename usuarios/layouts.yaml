@@ -17,6 +17,7 @@ Usuario:
   - username nome_completo
   - password password_confirm
   - email email_confirm
+  - captcha
 
 UsuarioDetail:
   Perfil:
