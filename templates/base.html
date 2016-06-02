@@ -29,10 +29,10 @@
              <div class="nav-collapse collapse">
                  <ul class="nav pull-right">
                    {% if user.is_authenticated %}
-                    <li><a href="">{{ user.username }}</a></li>
+                    <li><a href="{% url 'usuarios:usuario_detail' user.pk %}">{{ user.username }}</a></li>
                     <li><a href="{% url 'usuarios:logout' %}">Sair</a></li>
                    {% else %}
-                    <li><a href="{% url 'usuarios:usuarioexterno_create' %}">Cadastre-se</a></li>
+                    <li><a href="{% url 'usuarios:usuario_create' %}">Cadastre-se</a></li>
                     <li><a href="{% url 'usuarios:login' %}">Login</a></li>
                    {% endif %}
                  </ul>

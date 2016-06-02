@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from usuarios.models import UsuarioExterno
+from usuarios.models import Usuario
 
 
 class Sistema(models.Model):
@@ -22,7 +22,7 @@ class Sistema(models.Model):
 
 class Ticket(models.Model):
     codigo = models.PositiveIntegerField()
-    usuario = models.ForeignKey(UsuarioExterno)
+    usuario = models.ForeignKey(Usuario)
     sistema = models.ForeignKey(Sistema)
     titulo = models.CharField(verbose_name=_('Título'), max_length=100)
     resumo = models.CharField(verbose_name=_('Resumo'), max_length=50)

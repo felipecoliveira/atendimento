@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from django.contrib.auth.views import login, logout
 
 from usuarios.forms import LoginForm
-from usuarios.views import UsuarioExternoCrud
+from usuarios.views import UsuarioCrud
 
 from .apps import AppConfig
 
@@ -14,5 +14,5 @@ urlpatterns = [
         'authentication_form': LoginForm},
         name='login'),
     url(r'^logout/$', logout, {'next_page': '/login'}, name='logout'),
-    url(r'^usuario-externo/', include(UsuarioExternoCrud.get_urls())),
+    url(r'^usuario/', include(UsuarioCrud.get_urls())),
 ]

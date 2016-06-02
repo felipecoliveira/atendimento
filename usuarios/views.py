@@ -1,16 +1,21 @@
 import crud.base
 from crud.base import Crud
+from django.core.urlresolvers import reverse
+from .forms import UsuarioForm
+from .models import Usuario
 
-from .forms import UsuarioExternoForm
-from .models import UsuarioExterno
 
-
-class UsuarioExternoCrud(Crud):
-    model = UsuarioExterno
+class UsuarioCrud(Crud):
+    model = Usuario
     help_path = ''
 
     class CreateView(crud.base.CrudCreateView):
-        form_class = UsuarioExternoForm
+        form_class = UsuarioForm
+        form_valid_message = 'Cadastro realizado com sucesso. Aguarde a \
+                              validação do seu perfil.'
+
+        def get_success_url(self):
+            return reverse('home')
 
     class UpdateView(crud.base.CrudUpdateView):
-        form_class = UsuarioExternoForm
+        form_class = UsuarioForm

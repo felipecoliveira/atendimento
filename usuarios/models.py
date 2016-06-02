@@ -2,7 +2,7 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-
+from django.contrib.auth.models import User
 from atendimento.utils import SEXO_CHOICES, UF, YES_NO_CHOICES
 
 
@@ -44,46 +44,31 @@ class Subsecretaria(models.Model):
         return '[%s] %s' % (self.sigla, self.nome)
 
 
-class UsuarioExterno(models.Model):
+class Usuario(models.Model):
     '''
         Usuário cadastrado via web
     '''
+    user = models.ForeignKey(User)
     username = models.CharField(
         verbose_name=_('Nome de Usuário'),
         max_length=50)
-    cargo = models.CharField(verbose_name=_('Cargo'), max_length=120)
     nome_completo = models.CharField(
         verbose_name=_('Nome Completo'),
         max_length=128)
     data_criacao = models.DateTimeField(default=timezone.now)
-    sexo = models.CharField(
-        verbose_name=_('Sexo'),
-        max_length=1,
-        choices=SEXO_CHOICES,
-    )
-    cpf = models.CharField(
-        verbose_name=_('CPF'),
-        max_length=11)
-    rg = models.CharField(
-        verbose_name=_('RG'),
-        max_length=25,
-        blank=True,
-        null=True)
+    data_ultima_atualizacao = models.DateTimeField(default=timezone.now)
     email = models.EmailField(
+        unique=True,
         verbose_name=_('Email'))
-    endereco = models.CharField(verbose_name=_('Endereço'), max_length=256)
-    telefone = models.CharField(verbose_name=_('Telefone'), max_length=20)
-    casa_legislativa = models.ManyToManyField(
-        CasaLegislativa,
-        verbose_name=_('Casa Legislativa'))
-    habilitado = models.CharField(
-        max_length=3,
-        verbose_name=_('Habilitado?'),
-        choices=YES_NO_CHOICES)
+    habilitado = models.BooleanField(
+        default=False,
+        verbose_name=_('Habilitado?'))
+    conveniado = models.BooleanField(default=False)
+    responsavel = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = _('Usuário Externo')
-        verbose_name_plural = _('Usuários Externos')
+        verbose_name = _('Usuário')
+        verbose_name_plural = _('Usuários')
 
     def __str__(self):
         return '%s - Habilitado: %s' % (self.nome_completo, self.habilitado)
