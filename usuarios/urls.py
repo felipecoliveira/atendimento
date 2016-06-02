@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from django.contrib.auth.views import login, logout
 
 from usuarios.forms import LoginForm
-from usuarios.views import UsuarioCrud, HabilitarDetailView
+from usuarios.views import UsuarioCrud, HabilitarDetailView, HabilitarEditView
 
 from .apps import AppConfig
 
@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'^usuario/', include(UsuarioCrud.get_urls())),
     url(r'^habilitar/(?P<pk>\d+)$',
         HabilitarDetailView.as_view(), name='habilitar_detail'),
+    url(r'^habilitar/(?P<pk>\d+)/edit$',
+        HabilitarEditView.as_view(), name='habilitar_edit'),
 ]

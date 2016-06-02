@@ -1,8 +1,10 @@
 import crud.base
 from crud.base import Crud
 from django.core.urlresolvers import reverse
-from .forms import UsuarioForm, UsuarioEditForm
+from .forms import UsuarioForm, UsuarioEditForm, HabilitarEditForm
 from .models import Usuario
+from django.views.generic.edit import FormMixin
+from django.views.generic import UpdateView, FormView
 
 
 class UsuarioCrud(Crud):
@@ -35,5 +37,21 @@ class HabilitarDetailView(crud.base.CrudDetailView):
     template_name = "usuarios/habilitar_detail.html"
 
     def get(self, request, *args, **kwargs):
-        pk = self.kwargs['pk']
-        return self.render_to_response({'pk': pk})
+        context = {}
+        context['pk'] = self.kwargs['pk']
+        context['usuario'] = Usuario.objects.get(pk=self.kwargs['pk'])
+        return self.render_to_response(context)
+
+    def get_success_url(self):
+        return reverse('usuarios:usuario_list')
+
+
+class HabilitarEditView(FormView):
+    template_name = "crud/form.html"
+
+    def get(self, request, *args, **kwargs):
+        form = HabilitarEditForm()
+        context = {}
+        context['pk'] = self.kwargs['pk']
+        context['form'] = form
+        return self.render_to_response(context)
