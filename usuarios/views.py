@@ -27,7 +27,8 @@ class UsuarioCrud(Crud):
             return 'UsuarioDetail'
 
     class BaseMixin(crud.base.CrudBaseMixin):
-        list_field_names = ['username', 'nome_completo', 'habilitado']
+        list_field_names = ['username', 'nome_completo',
+                            'data_criacao', 'habilitado']
 
 
 class HabilitarDetailView(crud.base.CrudDetailView):

@@ -52,11 +52,20 @@ class UsuarioForm(ModelForm):
         return True
 
     def clean(self):
+
+        if ('password' not in self.cleaned_data or
+            'password_confirm' not in  self.cleaned_data):
+            raise ValidationError(_('Favor informar senhas atuais ou novas'))
+
         msg = _('As senhas não conferem.')
         self.valida_igualdade(
             self.cleaned_data['password'],
             self.cleaned_data['password_confirm'],
             msg)
+
+        if ('email' not in self.cleaned_data or
+            'email_confirm' not in  self.cleaned_data):
+            raise ValidationError(_('Favor informar endereços de email'))
 
         msg = _('Os emails não conferem.')
         self.valida_igualdade(
