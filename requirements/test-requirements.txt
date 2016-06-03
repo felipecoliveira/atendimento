@@ -8,4 +8,5 @@ pep8==1.7.0
 pytest==2.7.2
 pytest-cov==2.2.1
 pytest-django==2.9.1
+pytest-ipdb==0.1-prerelease2
 webtest==2.0.21
