@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+
 from atendimento.utils import SEXO_CHOICES, UF, YES_NO_CHOICES
 
 
@@ -75,3 +76,16 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.username
+
+
+class TelefoneUsuario(models.Model):
+    TIPO_TELEFONE = [('FIXO','FIXO'), ('CELULAR','CELULAR')]
+
+    ddd = models.CharField(max_length=2)
+    numero = models.CharField(max_length=10)
+    tipo = models.CharField(max_length=7, choices=TIPO_TELEFONE)
+    usuario = models.ForeignKey(Usuario)
+
+    class Meta:
+        verbose_name = _('Telefone')
+        verbose_name_plural = _('Telefones')

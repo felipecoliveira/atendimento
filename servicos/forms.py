@@ -2,14 +2,34 @@ from django import forms
 from django.forms import ModelForm, ValidationError
 from django.utils.translation import ugettext_lazy as _
 
-from .models import Sistema, Ticket
+from .models import Sistema, Solicitacao
 
 
-class TicketForm(ModelForm):
+class SolicitacaoForm(ModelForm):
+
+    resumo = forms.CharField(
+        label='Resumo',
+        max_length=500,
+        widget=forms.Textarea)
 
     class Meta:
-        model = Ticket
+        model = Solicitacao
         fields = ['codigo', 'usuario', 'sistema', 'titulo', 'resumo']
+        widgets = {'codigo': forms.HiddenInput(),
+                   'usuario': forms.HiddenInput()}
+
+class SolicitacaoEditForm(ModelForm):
+
+    resumo = forms.CharField(
+        label='Resumo',
+        max_length=500,
+        widget=forms.Textarea)
+
+    class Meta:
+        model = Solicitacao
+        fields = ['codigo', 'usuario', 'sistema', 'titulo', 'resumo']
+        widgets = {'codigo': forms.TextInput(attrs={'readonly': 'readonly'}),
+                   'usuario': forms.HiddenInput()}
 
 
 class SistemaForm(ModelForm):
