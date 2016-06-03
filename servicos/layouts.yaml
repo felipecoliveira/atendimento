@@ -26,3 +26,4 @@ SolicitacaoList:
     - usuario
     - sistema
     - titulo
+    - data_criacao

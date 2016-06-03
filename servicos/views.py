@@ -30,7 +30,7 @@ class SolicitacaoCrud(Crud):
     class ListView(crud.base.CrudListView):
         @property
         def layout_key(self):
-            return 'SolicitacaoEdit'
+            return 'SolicitacaoList'
 
 class SistemaCrud(Crud):
     model = Sistema
