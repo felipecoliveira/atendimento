@@ -24,6 +24,9 @@ class UsuarioCrud(Crud):
         def get_success_url(self):
             return reverse('home')
 
+    class ListView(LoginRequiredMixin, crud.base.CrudListView):
+        pass
+
     class UpdateView(LoginRequiredMixin, crud.base.CrudUpdateView):
         form_class = UsuarioEditForm
 

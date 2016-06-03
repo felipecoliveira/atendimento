@@ -43,3 +43,6 @@ class SistemaCrud(Crud):
 
     class UpdateView(LoginRequiredMixin, crud.base.CrudUpdateView):
         form_class = SistemaForm
+
+    class ListView(LoginRequiredMixin, crud.base.CrudListView):
+        pass
