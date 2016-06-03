@@ -7,6 +7,11 @@ from .models import Sistema, Ticket
 
 class TicketForm(ModelForm):
 
+    resumo = forms.CharField(
+        label='Resumo',
+        max_length=500,
+        widget=forms.Textarea)    
+
     class Meta:
         model = Ticket
         fields = ['codigo', 'usuario', 'sistema', 'titulo', 'resumo']
