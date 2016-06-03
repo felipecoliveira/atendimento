@@ -5,7 +5,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Fieldset, Layout, Submit, Button
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.validators import EMPTY_VALUES
+from django.core.validators import EMPTY_VALUES, validate_email
 from django.forms import ModelForm, ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
@@ -41,8 +41,8 @@ class UsuarioForm(ModelForm):
         label=_('Confirmar Senha'),
         widget=forms.PasswordInput())
 
-    email_confirm = forms.CharField(
-        max_length=20,
+    email_confirm = forms.EmailField(
+        required=True,
         label=_('Confirmar Email'))
 
     captcha = CaptchaField()
