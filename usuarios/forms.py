@@ -52,6 +52,7 @@ class UsuarioForm(ModelForm):
         return True
 
     def clean(self):
+        import ipdb; ipdb.set_trace()
         msg = _('As senhas não conferem.')
         self.valida_igualdade(
             self.cleaned_data['password'],
