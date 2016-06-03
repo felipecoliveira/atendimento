@@ -22,10 +22,10 @@
             {% for value, href in value_list %}
               <td>
                 {% if href %}
-                <a href="/habilitar{{ value_list|first|last|cut:'usuario/' }}">{{ value }}</a>
-                  {% else %}
-                    {{ value|safe }}
-                  {% endif %}
+                    <a href="/habilitar/responsavel{{ value_list|first|last|cut:'usuario/' }}/edit">{{ value }}</a>
+                {% else %}
+                  {{ value|safe }}
+                {% endif %}
               </td>
             {% endfor %}
           </tr>

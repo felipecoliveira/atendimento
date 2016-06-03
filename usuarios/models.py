@@ -74,8 +74,8 @@ class Usuario(models.Model):
         verbose_name_plural = _('Usuários')
 
         permissions = (
-            ('can_change_conveniado', 'User can change habilitado field'),
-            ('can_change_responsave', 'User can change habilitado field'),
+            ('can_change_conveniado', 'User can change conveniado field'),
+            ('can_change_responsavel', 'User can change responsavel field'),
         )
 
     def __str__(self):

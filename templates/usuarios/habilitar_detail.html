@@ -2,9 +2,18 @@
 {% load i18n %}
 
 {% block actions %}
-  <div class="actions btn-group pull-right" role="group">
-    <a href="{% url 'usuarios:habilitar_edit' pk %}" class="btn btn-default">{% trans 'Editar' %}</a>
-  </div>
+  {% if coplaf %}
+    <div class="actions btn-group pull-right" role="group">
+      <a href="{% url 'usuarios:conveniado_edit' pk %}" class="btn btn-default">{% trans 'Editar' %}</a>
+    </div>
+  {% endif %}
+
+  {% if coadfi %}
+    <div class="actions btn-group pull-right" role="group">
+      <a href="{% url 'usuarios:conveniado_edit' pk %}" class="btn btn-default">{% trans 'Editar' %}</a>
+    </div>
+  {% endif %}
+
 {% endblock actions %}
 {% block msg %}
   {% if not usuario.habilitado %}

@@ -1,5 +1,6 @@
 import re
 from django.core.exceptions import ValidationError
+import django_filters
 
 from django import forms
 from crispy_forms.helper import FormHelper
@@ -118,7 +119,7 @@ class UsuarioEditForm(UsuarioForm):
         return usuario
 
 
-class HabilitarEditForm(ModelForm):
+class HabilitadoFilterSet(django_filters.FilterSet):
     habilitado = forms.ChoiceField(
         widget=forms.Select(),
         required=True,
@@ -126,7 +127,30 @@ class HabilitarEditForm(ModelForm):
 
     class Meta:
         model = Usuario
-        fields = ['nome_completo', 'username', 'email', 'habilitado']
+        fields = ['habilitado']
+
+    def __init__(self, *args, **kwargs):
+        super(ConveniadoEditForm, self).__init__(*args, **kwargs)
+        row1 = crispy_layout_mixin.to_row(
+            [('habilitado', 4)])
+        self.form.helper = FormHelper()
+        self.form.helper.form_method = 'GET'
+        self.form.helper.layout = Layout(
+            Fieldset(_('Usuários'),
+                     row1,
+                     form_actions(save_label='Pesquisar'))
+        )
+
+
+class ConveniadoEditForm(ModelForm):
+    coveniado = forms.ChoiceField(
+        widget=forms.Select(),
+        required=True,
+        choices=YES_NO_CHOICES)
+
+    class Meta:
+        model = Usuario
+        fields = ['nome_completo', 'username', 'email', 'conveniado']
         widgets = {
             'username': forms.TextInput(attrs={'readonly': 'readonly'}),
             'nome_completo': forms.TextInput(attrs={'readonly': 'readonly'}),
@@ -134,15 +158,45 @@ class HabilitarEditForm(ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
-        super(HabilitarEditForm, self).__init__(*args, **kwargs)
+        super(ConveniadoEditForm, self).__init__(*args, **kwargs)
         row1 = crispy_layout_mixin.to_row(
             [('username', 4),
              ('nome_completo', 4),
              ('email', 4)])
-        row2 = crispy_layout_mixin.to_row([('habilitado', 12)])
+        row2 = crispy_layout_mixin.to_row([('conveniado', 12)])
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Fieldset(_('Editar usuário'),
+            Fieldset(_('Habilitar'),
                      row1, row2,
-                     form_actions(more=[Submit('Cancelar', 'Cancelar', style='background-color:black; color:white;')]))
+                     form_actions(save_label='Conveniado'))
+        )
+
+
+class ResponsavelEditForm(ModelForm):
+    responsavel = forms.ChoiceField(
+        widget=forms.Select(),
+        required=True,
+        choices=YES_NO_CHOICES)
+
+    class Meta:
+        model = Usuario
+        fields = ['nome_completo', 'username', 'email', 'responsavel']
+        widgets = {
+            'username': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'nome_completo': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'email': forms.TextInput(attrs={'readonly': 'readonly'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ResponsavelEditForm, self).__init__(*args, **kwargs)
+        row1 = crispy_layout_mixin.to_row(
+            [('username', 4),
+             ('nome_completo', 4),
+             ('email', 4)])
+        row2 = crispy_layout_mixin.to_row([('responsavel', 12)])
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(_('Habilitar'),
+                     row1, row2,
+                     form_actions(save_label='Responsável'))
         )
