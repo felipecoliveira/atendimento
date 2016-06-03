@@ -70,8 +70,8 @@ def get_field_display(obj, fieldname):
     elif 'FieldFile' in str(type(value)):
         if value:
             display = '<a href="{}">{}</a>'.format(
-                                                value.url,
-                                                value.name.split('/')[-1:][0])
+                value.url,
+                value.name.split('/')[-1:][0])
         else:
             display = ''
     else:

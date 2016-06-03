@@ -2,6 +2,8 @@ import re
 from django.core.exceptions import ValidationError
 
 from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Fieldset, Layout, Submit, Button
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.validators import EMPTY_VALUES
 from django.forms import ModelForm, ValidationError
@@ -10,6 +12,10 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from .models import Usuario
 from captcha.fields import CaptchaField
+from datetime import datetime
+import crispy_layout_mixin
+from crispy_layout_mixin import form_actions
+from atendimento.utils import YES_NO_CHOICES
 
 
 class LoginForm(AuthenticationForm):
@@ -52,12 +58,20 @@ class UsuarioForm(ModelForm):
         return True
 
     def clean(self):
-        import ipdb; ipdb.set_trace()
+
+        if ('password' not in self.cleaned_data or
+                'password_confirm' not in self.cleaned_data):
+            raise ValidationError(_('Favor informar senhas atuais ou novas'))
+
         msg = _('As senhas não conferem.')
         self.valida_igualdade(
             self.cleaned_data['password'],
             self.cleaned_data['password_confirm'],
             msg)
+
+        if ('email' not in self.cleaned_data or
+                'email_confirm' not in self.cleaned_data):
+            raise ValidationError(_('Favor informar endereços de email'))
 
         msg = _('Os emails não conferem.')
         self.valida_igualdade(
@@ -99,5 +113,36 @@ class UsuarioEditForm(UsuarioForm):
         u.set_password(self.cleaned_data['password'])
         u.save()
 
+        usuario.data_ultima_atualizacao = datetime.now()
         usuario.save()
         return usuario
+
+
+class HabilitarEditForm(ModelForm):
+    habilitado = forms.ChoiceField(
+        widget=forms.Select(),
+        required=True,
+        choices=YES_NO_CHOICES)
+
+    class Meta:
+        model = Usuario
+        fields = ['nome_completo', 'username', 'email', 'habilitado']
+        widgets = {
+            'username': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'nome_completo': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'email': forms.TextInput(attrs={'readonly': 'readonly'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(HabilitarEditForm, self).__init__(*args, **kwargs)
+        row1 = crispy_layout_mixin.to_row(
+            [('username', 4),
+             ('nome_completo', 4),
+             ('email', 4)])
+        row2 = crispy_layout_mixin.to_row([('habilitado', 12)])
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(_('Editar usuário'),
+                     row1, row2,
+                     form_actions(more=[Submit('Cancelar', 'Cancelar', style='background-color:black; color:white;')]))
+        )

@@ -4,11 +4,13 @@ from django.utils.translation import ugettext_lazy as _
 
 from .models import Sistema, Ticket
 
+
 class TicketForm(ModelForm):
 
     class Meta:
         model = Ticket
-        fields = ['codigo', 'usuario', 'sistema', 'titulo', 'resumo',]
+        fields = ['codigo', 'usuario', 'sistema', 'titulo', 'resumo']
+
 
 class SistemaForm(ModelForm):
 
