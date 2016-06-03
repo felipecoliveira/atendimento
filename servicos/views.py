@@ -1,20 +1,36 @@
 import crud.base
 from crud.base import Crud
+import random
 
-from .forms import SistemaForm, TicketForm
-from .models import Sistema, Ticket
+from .forms import SistemaForm, SolicitacaoEditForm, SolicitacaoForm
+from .models import Sistema, Solicitacao
+
+from usuarios.models import Usuario
 
 
-class TicketCrud(Crud):
-    model = Ticket
+class SolicitacaoCrud(Crud):
+    model = Solicitacao
     help_path = ''
 
     class CreateView(crud.base.CrudCreateView):
-        form_class = TicketForm
+        form_class = SolicitacaoForm
+
+        def get_initial(self):
+            usuario = Usuario.objects.get(user=self.request.user)
+            initial = {'codigo': random.randint(0, 65500), 'usuario': usuario}
+            return initial
 
     class UpdateView(crud.base.CrudUpdateView):
-        form_class = TicketForm
+        form_class = SolicitacaoEditForm
 
+        @property
+        def layout_key(self):
+            return 'SolicitacaoEdit'
+
+    class ListView(crud.base.CrudListView):
+        @property
+        def layout_key(self):
+            return 'SolicitacaoEdit'
 
 class SistemaCrud(Crud):
     model = Sistema
