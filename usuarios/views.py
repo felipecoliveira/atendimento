@@ -38,6 +38,23 @@ class UsuarioCrud(Crud):
         list_field_names = ['username', 'nome_completo',
                             'data_criacao', 'habilitado']
 
+    def get_context_data(self, **kwargs):
+        super(UsuarioCrud, self).get_context_data(**kwargs)
+        import ipdb; ipdb.set_trace()
+
+        if self.request.user.groups.filter(name='COADFI'):
+            context = {
+                'coadfi': True,
+            }
+            context.update(kwargs)
+        if self.request.user.groups.filter(name='COPLAF'):
+            context = {
+                'coplaf': True,
+            }
+        context.update(kwargs)
+
+        return context
+
 
 class HabilitarDetailView(crud.base.CrudDetailView):
     template_name = "usuarios/habilitar_detail.html"
@@ -51,7 +68,9 @@ class HabilitarDetailView(crud.base.CrudDetailView):
 
 class ConveniadoView(PermissionRequiredMixin, FormView):
     template_name = "crud/form.html"
-    permission_required = 'can_edit_usuario'
+    permission_required = {'usuarios.change_usuario',
+                           'usuarios.can_change_conveniado',
+                           'usuarios.add_usuario'}
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -82,7 +101,9 @@ class ConveniadoView(PermissionRequiredMixin, FormView):
 
 class ResponsavelView(PermissionRequiredMixin, FormView):
     template_name = "crud/form.html"
-    permission_required = 'can_edit_usuario'
+    permission_required = {'usuarios.change_usuario',
+                           'usuarios.can_change_responsavel',
+                           'usuarios.add_usuario'}
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -108,22 +129,6 @@ class ResponsavelView(PermissionRequiredMixin, FormView):
     def get_success_url(self):
         return reverse('usuarios:usuario_list')
 
-# if self.groups.get(name='COADFI'):
-#             context['conveniado'] = True
 
-
-# class HabilitarDetailView(crud.base.CrudDetailView):
-#     template_name = "usuarios/habilitar_detail.html"
-#     queryset = Usuario.objects.filter(habilitado=False)
-
-#     def get(self, request, *args, **kwargs):
-#         context = {}
-#         context['pk'] = self.kwargs['pk']
-#         context['usuario'] = Usuario.objects.get(pk=self.kwargs['pk'])
-
-#         if self.request.user.groups.get(name='COADFI'):
-#             context['coadfi'] = True
-#         if self.request.user.groups.get(name='COPLAF'):
-#             context['coplaf'] = True
-
-#         return self.render_to_response(context)
+def redireciona(user):
+    if user.has
