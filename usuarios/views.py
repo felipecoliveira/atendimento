@@ -1,12 +1,15 @@
-from django.utils import timezone
-import crud.base
-from crud.base import Crud
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
-from .forms import UsuarioForm, UsuarioEditForm, HabilitarEditForm
-from .models import Usuario
+from django.utils import timezone
+from django.views.generic import FormView, UpdateView
 from django.views.generic.edit import FormMixin
-from django.views.generic import UpdateView, FormView
+
+import crud.base
 from atendimento.utils import str2bool
+from crud.base import Crud
+
+from .forms import HabilitarEditForm, UsuarioEditForm, UsuarioForm
+from .models import Usuario
 
 
 class UsuarioCrud(Crud):
@@ -21,10 +24,10 @@ class UsuarioCrud(Crud):
         def get_success_url(self):
             return reverse('home')
 
-    class UpdateView(crud.base.CrudUpdateView):
+    class UpdateView(LoginRequiredMixin, crud.base.CrudUpdateView):
         form_class = UsuarioEditForm
 
-    class DetailView(crud.base.CrudDetailView):
+    class DetailView(LoginRequiredMixin, crud.base.CrudDetailView):
 
         @property
         def layout_key(self):
@@ -35,7 +38,7 @@ class UsuarioCrud(Crud):
                             'data_criacao', 'habilitado']
 
 
-class HabilitarDetailView(crud.base.CrudDetailView):
+class HabilitarDetailView(LoginRequiredMixin, crud.base.CrudDetailView):
     template_name = "usuarios/habilitar_detail.html"
 
     def get(self, request, *args, **kwargs):
@@ -45,7 +48,7 @@ class HabilitarDetailView(crud.base.CrudDetailView):
         return self.render_to_response(context)
 
 
-class HabilitarEditView(FormView):
+class HabilitarEditView(LoginRequiredMixin, FormView):
     template_name = "crud/form.html"
 
     def get(self, request, *args, **kwargs):

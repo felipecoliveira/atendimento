@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from django.contrib.auth.views import login, logout
 
 from usuarios.forms import LoginForm
-from usuarios.views import UsuarioCrud, HabilitarDetailView, HabilitarEditView
+from usuarios.views import HabilitarDetailView, HabilitarEditView, UsuarioCrud
 
 from .apps import AppConfig
 
