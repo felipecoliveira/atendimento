@@ -1,12 +1,14 @@
 from django.utils import timezone
 import crud.base
-from crud.base import Crud, make_pagination
+from crud.base import Crud
+from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.urlresolvers import reverse
-from django_filters.views import FilterView
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import redirect
+
 from .forms import (ConveniadoEditForm, UsuarioForm,
-                    UsuarioEditForm, ResponsavelEditForm,
-                    HabilitadoFilterSet)
+                    UsuarioEditForm, ResponsavelEditForm)
 from .models import Usuario
 from django.views.generic import FormView
 from atendimento.utils import str2bool
@@ -38,23 +40,6 @@ class UsuarioCrud(Crud):
         list_field_names = ['username', 'nome_completo',
                             'data_criacao', 'habilitado']
 
-    def get_context_data(self, **kwargs):
-        super(UsuarioCrud, self).get_context_data(**kwargs)
-        import ipdb; ipdb.set_trace()
-
-        if self.request.user.groups.filter(name='COADFI'):
-            context = {
-                'coadfi': True,
-            }
-            context.update(kwargs)
-        if self.request.user.groups.filter(name='COPLAF'):
-            context = {
-                'coplaf': True,
-            }
-        context.update(kwargs)
-
-        return context
-
 
 class HabilitarDetailView(crud.base.CrudDetailView):
     template_name = "usuarios/habilitar_detail.html"
@@ -84,7 +69,6 @@ class ConveniadoView(PermissionRequiredMixin, FormView):
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
-        # import ipdb; ipdb.set_trace()
         form = ConveniadoEditForm(request.POST)
         usuario = Usuario.objects.get(pk=self.kwargs['pk'])
         if form.data.get('conveniado') == 'on':
@@ -104,6 +88,12 @@ class ResponsavelView(PermissionRequiredMixin, FormView):
     permission_required = {'usuarios.change_usuario',
                            'usuarios.can_change_responsavel',
                            'usuarios.add_usuario'}
+
+    def handle_no_permission(self):
+        if self.raise_exception:
+            raise PermissionDenied(self.get_permission_denied_message())
+        return HttpResponseRedirect(reverse(
+            'usuarios:conveniado_edit', kwargs={'pk': self.kwargs['pk']}))
 
     def get(self, request, *args, **kwargs):
         context = {}
@@ -128,7 +118,3 @@ class ResponsavelView(PermissionRequiredMixin, FormView):
 
     def get_success_url(self):
         return reverse('usuarios:usuario_list')
-
-
-def redireciona(user):
-    if user.has

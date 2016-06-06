@@ -119,29 +119,6 @@ class UsuarioEditForm(UsuarioForm):
         return usuario
 
 
-class HabilitadoFilterSet(django_filters.FilterSet):
-    habilitado = forms.ChoiceField(
-        widget=forms.Select(),
-        required=True,
-        choices=YES_NO_CHOICES)
-
-    class Meta:
-        model = Usuario
-        fields = ['habilitado']
-
-    def __init__(self, *args, **kwargs):
-        super(ConveniadoEditForm, self).__init__(*args, **kwargs)
-        row1 = crispy_layout_mixin.to_row(
-            [('habilitado', 4)])
-        self.form.helper = FormHelper()
-        self.form.helper.form_method = 'GET'
-        self.form.helper.layout = Layout(
-            Fieldset(_('Usuários'),
-                     row1,
-                     form_actions(save_label='Pesquisar'))
-        )
-
-
 class ConveniadoEditForm(ModelForm):
     coveniado = forms.ChoiceField(
         widget=forms.Select(),
