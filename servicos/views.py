@@ -16,7 +16,7 @@ class TicketCrud(Crud):
 
     class CreateView(PermissionRequiredMixin, crud.base.CrudCreateView):
         form_class = TicketForm
-        permission_required = {'usuarios.add_ticket'}
+        permission_required = {'servicos.add_ticket'}
 
         def get_initial(self):
             # Essa query no caso de super_user é só para nao quebrar
@@ -28,7 +28,7 @@ class TicketCrud(Crud):
 
     class UpdateView(crud.base.CrudUpdateView):
         form_class = TicketForm
-        permission_required = {'usuarios.change_ticket'}
+        permission_required = {'servicos.change_ticket'}
 
         def get_initial(self):
             # Essa query no caso de super_user é só para nao quebrar,
