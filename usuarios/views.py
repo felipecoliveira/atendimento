@@ -34,9 +34,19 @@ class UsuarioCrud(Crud):
         def layout_key(self):
             return 'UsuarioDetail'
 
-    class BaseMixin(PermissionRequiredMixin, crud.base.CrudBaseMixin):
-        permission_required = {'usuarios.can_change_conveniado',
-                               'usuarios.can_change_responsavel'}
+    class ListView(PermissionRequiredMixin, crud.base.CrudListView):
+
+        def has_permission(self):
+            if self.request.user.groups.filter(name='COPLAF'):
+                perms = {'usuarios.can_change_conveniado'}
+                return self.request.user.has_perms(perms)
+            if self.request.user.groups.filter(name='COADFI'):
+                perms = {'usuarios.can_change_responsavel'}
+                return self.request.user.has_perms(perms)
+            else:
+                return False
+
+    class BaseMixin(crud.base.CrudBaseMixin):
         queryset = Usuario.objects.filter(habilitado=False)
         list_field_names = ['username', 'nome_completo',
                             'data_criacao', 'habilitado']
