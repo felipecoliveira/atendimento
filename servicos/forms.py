@@ -10,6 +10,8 @@ class TicketForm(ModelForm):
     class Meta:
         model = Ticket
         fields = ['codigo', 'usuario', 'sistema', 'titulo', 'resumo']
+        widgets = {
+            'usuario': forms.HiddenInput()}
 
 
 class SistemaForm(ModelForm):

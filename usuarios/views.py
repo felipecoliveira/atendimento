@@ -3,6 +3,7 @@ import crud.base
 from crud.base import Crud
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.models import User, Permission
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
 
@@ -77,6 +78,9 @@ class ConveniadoView(PermissionRequiredMixin, FormView):
         usuario.data_ultima_atualizacao = timezone.now()
         if usuario.conveniado is True and usuario.responsavel is True:
             usuario.habilitado = True
+            user = User.objects.get(usuario__id=usuario.id)
+            permissao = Permission.objects.get(name='Can add Ticket')
+            user.user_permissions.add(permissao)
         usuario.save()
         return self.form_valid(form)
 
@@ -114,6 +118,9 @@ class ResponsavelView(PermissionRequiredMixin, FormView):
         usuario.data_ultima_atualizacao = timezone.now()
         if usuario.conveniado is True and usuario.responsavel is True:
             usuario.habilitado = True
+            user = User.objects.get(usuario__id=usuario.id)
+            permissao = Permission.objects.get(name='Can add Ticket')
+            user.user_permissions.add(permissao)
         usuario.save()
         return self.form_valid(form)
 
