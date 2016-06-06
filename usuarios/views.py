@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import redirect
 
 from .forms import (ConveniadoEditForm, UsuarioForm,
                     UsuarioEditForm, ResponsavelEditForm)
@@ -41,17 +40,6 @@ class UsuarioCrud(Crud):
         queryset = Usuario.objects.filter(habilitado=False)
         list_field_names = ['username', 'nome_completo',
                             'data_criacao', 'habilitado']
-
-
-# class HabilitarDetailView(PermissionRequiredMixin, crud.base.CrudDetailView):
-#     template_name = "usuarios/habilitar_detail.html"
-
-#     def get(self, request, *args, **kwargs):
-#         # import ipdb; ipdb.set_trace()
-#         context = {}
-#         context['pk'] = self.kwargs['pk']
-#         context['usuario'] = Usuario.objects.get(pk=self.kwargs['pk'])
-#         return self.render_to_response(context)
 
 
 class ConveniadoView(PermissionRequiredMixin, FormView):
