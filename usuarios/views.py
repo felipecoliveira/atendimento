@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.views.generic import DetailView, FormView
@@ -21,6 +23,16 @@ class UsuarioCrud(Crud):
                               validação do seu perfil.'
 
         def get_success_url(self):
+            assunto = "Cadastro no Sistema de Atendimento ao Usuário"
+            mensagem = ("Este e-mail foi utilizado para fazer cadastro no " +
+                        "Sistema de Atendimento ao Usuário do Interlegis.\n" +
+                        "Caso você não tenha feito este cadastro, por favor " +
+                        "ignore esta mensagem.")
+            remetente = settings.EMAIL_HOST_USER
+            destinatario = [self.get_form().data['email'],
+                            settings.EMAIL_HOST_USER]
+            send_mail(assunto, mensagem, remetente, destinatario,
+                      fail_silently=False)
             return reverse('home')
 
     class ListView(LoginRequiredMixin, crud.base.CrudListView):
