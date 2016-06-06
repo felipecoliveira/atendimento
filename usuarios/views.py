@@ -35,20 +35,23 @@ class UsuarioCrud(Crud):
         def layout_key(self):
             return 'UsuarioDetail'
 
-    class BaseMixin(crud.base.CrudBaseMixin):
+    class BaseMixin(PermissionRequiredMixin, crud.base.CrudBaseMixin):
+        permission_required = {'usuarios.can_change_conveniado',
+                               'usuarios.can_change_responsavel'}
         queryset = Usuario.objects.filter(habilitado=False)
         list_field_names = ['username', 'nome_completo',
                             'data_criacao', 'habilitado']
 
 
-class HabilitarDetailView(crud.base.CrudDetailView):
-    template_name = "usuarios/habilitar_detail.html"
+# class HabilitarDetailView(PermissionRequiredMixin, crud.base.CrudDetailView):
+#     template_name = "usuarios/habilitar_detail.html"
 
-    def get(self, request, *args, **kwargs):
-        context = {}
-        context['pk'] = self.kwargs['pk']
-        context['usuario'] = Usuario.objects.get(pk=self.kwargs['pk'])
-        return self.render_to_response(context)
+#     def get(self, request, *args, **kwargs):
+#         # import ipdb; ipdb.set_trace()
+#         context = {}
+#         context['pk'] = self.kwargs['pk']
+#         context['usuario'] = Usuario.objects.get(pk=self.kwargs['pk'])
+#         return self.render_to_response(context)
 
 
 class ConveniadoView(PermissionRequiredMixin, FormView):

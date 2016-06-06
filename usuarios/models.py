@@ -2,8 +2,13 @@
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
-from atendimento.utils import SEXO_CHOICES, UF, YES_NO_CHOICES
+from django.contrib.auth.models import User, Group
+from atendimento.utils import SEXO_CHOICES, UF
+
+
+def grupo_usuario_comum():
+    grupo = Group.objects.get(name='Usuário Comum')
+    return grupo.id
 
 
 class CasaLegislativa(models.Model):
@@ -68,6 +73,7 @@ class Usuario(models.Model):
         verbose_name=_('Habilitado?'))
     conveniado = models.BooleanField(default=False)
     responsavel = models.BooleanField(default=False)
+    grupo_usuario = models.ForeignKey(Group, default=grupo_usuario_comum)
 
     class Meta:
         verbose_name = _('Usuário')

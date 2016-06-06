@@ -1,15 +1,12 @@
-import re
 from django.core.exceptions import ValidationError
-import django_filters
 
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Fieldset, Layout, Submit, Button
+from crispy_forms.layout import Fieldset, Layout
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.validators import EMPTY_VALUES
-from django.forms import ModelForm, ValidationError
+from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import transaction
 from .models import Usuario
 from captcha.fields import CaptchaField
@@ -92,6 +89,10 @@ class UsuarioForm(ModelForm):
 
         usuario.user = u
         usuario.save()
+
+        grupo = Group.objects.get(name='Usuário Comum')
+        u.groups.add(grupo)
+
         return usuario
 
 
