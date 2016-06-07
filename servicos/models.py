@@ -36,7 +36,7 @@ class Solicitacao(models.Model):
     class Meta:
         verbose_name = _('Solicitação de Novo Serviço')
         verbose_name_plural = _('Solicitações de Novos Serviços')
-        ordering=['data_criacao']
+        ordering = ['data_criacao']
 
     def __str__(self):
         return "%s - %s" % (self.codigo, self.resumo)

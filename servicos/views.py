@@ -34,6 +34,7 @@ class SolicitacaoCrud(LoginRequiredMixin, Crud):
         def layout_key(self):
             return 'SolicitacaoList'
 
+
 class SistemaCrud(Crud):
     model = Sistema
     help_path = ''

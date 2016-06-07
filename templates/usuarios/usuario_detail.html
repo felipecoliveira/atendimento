@@ -14,3 +14,18 @@
     <h4><font face="verdana" color="green"><p>Esse perfil já <strong>está habilitado</strong> para uso das funcionalidades.</p></font></h4>
   {% endif %}
 {% endblock msg %}
+
+{% block extrablock %}
+
+  {% for tel in telefones %}
+    <div class="col-sm-span">
+      <div class="form-group">
+        <p class="control-label">{{tel|first}}</p>
+        <div class="controls">
+          <p class="form-control-static">{{ tel|last }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endblock %}
