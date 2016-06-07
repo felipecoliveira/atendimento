@@ -166,7 +166,7 @@ class UsuarioForm(ModelForm):
                 numero=self.data['segundo_numero'],
                 principal=self.data['segundo_principal']
             )
-            usuario.primeiro_telefone = tel
+            usuario.segundo_telefone = tel
 
         # Cria User
         u = User.objects.create(username=usuario.username, email=usuario.email)

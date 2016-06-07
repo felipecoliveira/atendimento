@@ -22,12 +22,14 @@ Usuario:
     - primeiro_tipo primeiro_ddd:2 primeiro_numero:6 primeiro_principal
   Segundo Telefone:
     - segundo_tipo segundo_ddd:2 segundo_numero:6 segundo_principal
-  Verificação:
+  Prove que você é um humano:
     - captcha
 
 UsuarioDetail:
   Perfil:
   - nome_completo email
+  - cargo vinculo
+  - cpf rg casa_legislativa
 
 HabilitarEdit:
   Editar Usuário:

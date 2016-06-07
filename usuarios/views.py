@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import FormView, UpdateView
+from django.views.generic import DetailView, FormView, UpdateView
 from django.views.generic.edit import FormMixin
 
 import crud.base
@@ -31,6 +31,21 @@ class UsuarioCrud(Crud):
         form_class = UsuarioEditForm
 
     class DetailView(LoginRequiredMixin, crud.base.CrudDetailView):
+
+        def get_context_data(self, **kwargs):
+            context = super(DetailView, self).get_context_data(**kwargs)
+
+            tel1 = context['object'].primeiro_telefone
+            tel1 = [('Primeiro Telefone'),
+                    ('[%s] - %s' % (tel1.ddd, tel1.numero))]
+
+            tel2 = context['object'].segundo_telefone or ''
+            if tel2:
+                tel2 = [('Primeiro Telefone'),
+                        ('[%s] - %s' % (tel2.ddd, tel2.numero))]
+
+            context['telefones'] = [tel1, tel2]
+            return context
 
         @property
         def layout_key(self):

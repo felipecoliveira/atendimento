@@ -10,7 +10,9 @@
     </div>
     {% endblock actions %}
   </div>
-  {% block msg %} {% endblock msg%}
+
+  {% block msg %} {% endblock msg %}
+
   {% block detail_content %}
     {% for fieldset in view.layout_display %}
       <h2 class="legend">{{ fieldset.legend }}</h2>
@@ -30,5 +32,7 @@
       {% endfor %}
     {% endfor %}
   {% endblock detail_content %}
+
+  {% block extrablock %}{% endblock %}
 
 {% endblock base_content %}
