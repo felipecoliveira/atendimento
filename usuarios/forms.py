@@ -84,6 +84,15 @@ class UsuarioForm(ModelForm):
                   'password_confirm', 'email_confirm', 'captcha', 'cpf', 'rg',
                   'cargo', 'casa_legislativa']
 
+    def __init__(self, *args, **kwargs):
+        super(UsuarioForm, self).__init__(*args, **kwargs)
+        self.fields['rg'].widget.attrs['class'] = 'rg'
+        self.fields['cpf'].widget.attrs['class'] = 'cpf'
+        self.fields['primeiro_numero'].widget.attrs['class'] = 'telefone'
+        self.fields['primeiro_ddd'].widget.attrs['class'] = 'ddd'
+        self.fields['segundo_numero'].widget.attrs['class'] = 'telefone'
+        self.fields['segundo_ddd'].widget.attrs['class'] = 'ddd'
+
     def valida_igualdade(self, texto1, texto2, msg):
         if texto1 != texto2:
             raise ValidationError(msg)

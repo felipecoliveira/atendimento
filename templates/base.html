@@ -107,8 +107,12 @@
       {% endblock content_container %}
     {% endblock %}
     {% block foot_js %}
+      <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+      <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+      <script src="{% static 'jquery-mask-plugin/dist/jquery.mask.js' %}"></script>
+
       <script src="{% static 'js/bootstrap.min.js' %}"></script>
-      {% block extra_js %}{% endblock %}
+      <script src="{% static 'js/app.js' %}"></script>
     {% endblock foot_js %}
   </body>
 
