@@ -4,9 +4,11 @@ from captcha.fields import CaptchaField
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Fieldset, Layout, Submit
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.db import transaction
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
@@ -170,6 +172,18 @@ class UsuarioForm(ModelForm):
         # Cria User
         u = User.objects.create(username=usuario.username, email=usuario.email)
         u.set_password(self.cleaned_data['password'])
+
+        assunto = "Cadastro no Sistema de Atendimento ao Usuário"
+        mensagem = ("Este e-mail foi utilizado para fazer cadastro no " +
+                    "Sistema de Atendimento ao Usuário do Interlegis.\n" +
+                    "Caso você não tenha feito este cadastro, por favor " +
+                    "ignore esta mensagem.")
+        remetente = settings.EMAIL_HOST_USER
+        destinatario = [usuario.email,
+                        settings.EMAIL_HOST_USER]
+        send_mail(assunto, mensagem, remetente, destinatario,
+                  fail_silently=False)
+
         u.save()
 
         usuario.user = u
