@@ -159,7 +159,8 @@ class UsuarioForm(ModelForm):
         )
         usuario.primeiro_telefone = tel
 
-        if self.cleaned_data['segundo_telefone'].numero:
+        tel = self.cleaned_data['segundo_telefone']
+        if (tel.tipo and tel.ddd and tel.numero and tel.principal):
             tel = Telefone.objects.create(
                 tipo=self.data['segundo_tipo'],
                 ddd=self.data['segundo_ddd'],
@@ -194,6 +195,39 @@ class UsuarioEditForm(UsuarioForm):
     def save(self, commit=False):
         usuario = super(UsuarioForm, self).save(commit)
 
+        # Primeiro telefone
+        tel = usuario.primeiro_telefone
+
+        tel.tipo = self.data['primeiro_tipo']
+        tel.ddd = self.data['primeiro_ddd']
+        tel.numero = self.data['primeiro_numero']
+        tel.principal = self.data['primeiro_principal']
+        tel.save()
+
+        usuario.primeiro_telefone = tel
+
+        # Segundo telefone
+        tel = usuario.segundo_telefone
+
+        if tel:
+            tel.tipo = self.data['segundo_tipo']
+            tel.ddd = self.data['segundo_ddd']
+            tel.numero = self.data['segundo_numero']
+            tel.principal = self.data['segundo_principal']
+            tel.save()
+            usuario.segundo_telefone = tel
+
+        tel = self.cleaned_data['segundo_telefone']
+        if (tel.tipo and tel.ddd and tel.numero and tel.principal):
+            tel = Telefone.objects.create(
+                tipo=self.data['segundo_tipo'],
+                ddd=self.data['segundo_ddd'],
+                numero=self.data['segundo_numero'],
+                principal=self.data['segundo_principal']
+            )
+            usuario.segundo_telefone = tel
+
+        # User
         u = usuario.user
         u.email = usuario.email
         u.set_password(self.cleaned_data['password'])
