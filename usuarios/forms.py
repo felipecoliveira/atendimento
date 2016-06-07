@@ -155,3 +155,19 @@ class HabilitarEditForm(ModelForm):
                      row1, row2,
                      form_actions(more=[Submit('Cancelar', 'Cancelar', style='background-color:black; color:white;')]))
         )
+
+
+class EmailReuperacaoForm(UsuarioForm):
+    class Meta:
+        model = Usuario
+        fields = ['email']
+
+    def clean(self):
+        email_existente = Usuario.objects.filter(
+            email=self.cleaned_data['email'])
+
+        if not email_existente:
+            msg = _('Não existe nenhum usuário cadastrado com este e-mail.')
+            raise ValidationError(msg)
+
+        return self.cleaned_data
