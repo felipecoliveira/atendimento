@@ -81,6 +81,13 @@ class UsuarioForm(ModelForm):
             self.cleaned_data['email_confirm'],
             msg)
 
+        email_existente = Usuario.objects.filter(
+            email=self.cleaned_data['email'])
+
+        if email_existente:
+            msg = _('Esse email já foi cadastrado.')
+            raise ValidationError(msg)
+
         return self.cleaned_data
 
     @transaction.atomic
