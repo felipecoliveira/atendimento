@@ -122,6 +122,12 @@ class UsuarioForm(ModelForm):
         cleaned_data['segundo_telefone'] = telefone
         return cleaned_data
 
+
+    def valida_email_existente(self):
+         return Usuario.objects.filter(
+                email=self.cleaned_data['email']).exists()
+
+
     def clean(self):
 
         if ('password' not in self.cleaned_data or
@@ -144,8 +150,7 @@ class UsuarioForm(ModelForm):
             self.cleaned_data['email_confirm'],
             msg)
 
-        email_existente = Usuario.objects.filter(
-            email=self.cleaned_data['email'])
+        email_existente = self.valida_email_existente()
 
         if email_existente:
             msg = _('Esse email já foi cadastrado.')
@@ -183,7 +188,6 @@ class UsuarioForm(ModelForm):
 
         usuario.user = u
         usuario.save()
-        return usuario
 
 
 class UsuarioEditForm(UsuarioForm):
@@ -197,6 +201,16 @@ class UsuarioEditForm(UsuarioForm):
     def __init__(self, *args, **kwargs):
         super(UsuarioEditForm, self).__init__(*args, **kwargs)
         self.fields['email_confirm'].initial = self.instance.email
+
+
+    def valida_email_existente(self):
+        '''Não permite atualizar emails para
+           emails existentes de outro usuário
+        '''
+        return Usuario.objects.filter(
+                    email=self.cleaned_data['email']).exclude(
+                    user__username=self.cleaned_data['username']).exists()
+
 
     @transaction.atomic
     def save(self, commit=False):
