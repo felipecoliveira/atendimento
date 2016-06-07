@@ -84,7 +84,8 @@ class Usuario(models.Model):
     data_criacao = models.DateTimeField(
         _('Data Criação'),
         default=timezone.now)
-    data_ultima_atualizacao = models.DateTimeField(default=timezone.now)
+    data_ultima_atualizacao = models.DateTimeField(
+        default=timezone.now, verbose_name=_('Última atualização'))
     email = models.EmailField(
         unique=True,
         verbose_name=_('Email'))
