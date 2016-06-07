@@ -45,10 +45,34 @@ class Subsecretaria(models.Model):
         return '[%s] %s' % (self.sigla, self.nome)
 
 
+class Telefone(models.Model):
+    TIPO_TELEFONE = [('FIXO', 'FIXO'), ('CELULAR', 'CELULAR')]
+
+    tipo = models.CharField(
+        max_length=7,
+        choices=TIPO_TELEFONE,
+        verbose_name=_('Tipo Telefone'),)
+    ddd = models.CharField(max_length=2, verbose_name=_('DDD'))
+    numero = models.CharField(max_length=10, verbose_name=_('Número'))
+    principal = models.CharField(
+        max_length=10,
+        verbose_name=_('Telefone Principal?'),
+        choices=YES_NO_CHOICES)
+
+    class Meta:
+        verbose_name = _('Telefone')
+        verbose_name_plural = _('Telefones')
+
+
 class Usuario(models.Model):
     '''
         Usuário cadastrado via web
     '''
+
+    TIPO_VINCULO = [('Tercerizado', 'Tercerizado'),
+                    ('Efetivo', 'Efetivo'),
+                    ('Contratado', 'Contratado')]
+
     user = models.ForeignKey(User)
     username = models.CharField(
         verbose_name=_('Nome de Usuário'),
@@ -69,6 +93,31 @@ class Usuario(models.Model):
         verbose_name=_('Habilitado?'))
     conveniado = models.BooleanField(default=False)
     responsavel = models.BooleanField(default=False)
+    rg = models.CharField(
+        max_length=9,
+        null=True,
+        verbose_name=_('RG'))
+    cpf = models.CharField(
+        max_length=11,
+        verbose_name=_('CPF'),
+        default='00000000000')
+    cargo = models.CharField(
+        max_length=30,
+        verbose_name=_('Cargo'),
+        default='--------')
+    vinculo = models.CharField(
+        max_length=10,
+        verbose_name=_('Vinculo'),
+        choices=TIPO_VINCULO,
+        default='--------')
+    casa_legislativa = models.CharField(
+        max_length=30,
+        verbose_name=_('Casa Legislativa'),
+        default='--------')
+    primeiro_telefone = models.ForeignKey(
+        Telefone, null=True, related_name='primeiro_telefone')
+    segundo_telefone = models.ForeignKey(
+        Telefone, null=True, related_name='segundo_telefone')
 
     class Meta:
         verbose_name = _('Usuário')
@@ -76,16 +125,3 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.username
-
-
-class TelefoneUsuario(models.Model):
-    TIPO_TELEFONE = [('FIXO','FIXO'), ('CELULAR','CELULAR')]
-
-    ddd = models.CharField(max_length=2)
-    numero = models.CharField(max_length=10)
-    tipo = models.CharField(max_length=7, choices=TIPO_TELEFONE)
-    usuario = models.ForeignKey(Usuario)
-
-    class Meta:
-        verbose_name = _('Telefone')
-        verbose_name_plural = _('Telefones')

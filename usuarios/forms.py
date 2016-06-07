@@ -17,7 +17,7 @@ import crispy_layout_mixin
 from atendimento.utils import YES_NO_CHOICES
 from crispy_layout_mixin import form_actions
 
-from .models import Usuario
+from .models import Telefone, Usuario
 
 
 class LoginForm(AuthenticationForm):
@@ -33,6 +33,37 @@ class LoginForm(AuthenticationForm):
 
 
 class UsuarioForm(ModelForm):
+    # Telefone
+    TIPO_TELEFONE = [('FIXO', 'FIXO'), ('CELULAR', 'CELULAR')]
+
+    # Primeiro Telefone
+    primeiro_tipo = forms.ChoiceField(
+        widget=forms.Select(),
+        choices=TIPO_TELEFONE,
+        label=_('Tipo Telefone'))
+    primeiro_ddd = forms.CharField(max_length=2, label=_('DDD'))
+    primeiro_numero = forms.CharField(max_length=10, label=_('Número'))
+    primeiro_principal = forms.TypedChoiceField(
+        widget=forms.Select(),
+        label=_('Telefone Principal?'),
+        choices=YES_NO_CHOICES)
+
+    # Primeiro Telefone
+    segundo_tipo = forms.ChoiceField(
+        required=False,
+        widget=forms.Select(),
+        choices=TIPO_TELEFONE,
+        label=_('Tipo Telefone'))
+    segundo_ddd = forms.CharField(required=False, max_length=2, label=_('DDD'))
+    segundo_numero = forms.CharField(
+        required=False, max_length=10, label=_('Número'))
+    segundo_principal = forms.ChoiceField(
+        required=False,
+        widget=forms.Select(),
+        label=_('Telefone Principal?'),
+        choices=YES_NO_CHOICES)
+
+    # Usuário
     password = forms.CharField(
         max_length=20,
         label=_('Senha'),
@@ -51,13 +82,38 @@ class UsuarioForm(ModelForm):
 
     class Meta:
         model = Usuario
-        fields = ['username', 'email', 'nome_completo', 'password',
-                  'password_confirm', 'email_confirm', 'captcha']
+        fields = ['username', 'email', 'nome_completo', 'password', 'vinculo',
+                  'password_confirm', 'email_confirm', 'captcha', 'cpf', 'rg',
+                  'cargo', 'casa_legislativa']
 
     def valida_igualdade(self, texto1, texto2, msg):
         if texto1 != texto2:
             raise ValidationError(msg)
         return True
+
+    def clean_primeiro_numero(self):
+        cleaned_data = self.cleaned_data
+
+        telefone = Telefone()
+        telefone.tipo = self.data['primeiro_tipo']
+        telefone.ddd = self.data['primeiro_ddd']
+        telefone.numero = self.data['primeiro_numero']
+        telefone.principal = self.data['primeiro_principal']
+
+        cleaned_data['primeiro_telefone'] = telefone
+        return cleaned_data
+
+    def clean_segundo_numero(self):
+        cleaned_data = self.cleaned_data
+
+        telefone = Telefone()
+        telefone.tipo = self.data['segundo_tipo']
+        telefone.ddd = self.data['segundo_ddd']
+        telefone.numero = self.data['segundo_numero']
+        telefone.principal = self.data['segundo_principal']
+
+        cleaned_data['segundo_telefone'] = telefone
+        return cleaned_data
 
     def clean(self):
 
@@ -94,6 +150,25 @@ class UsuarioForm(ModelForm):
     def save(self, commit=False):
         usuario = super(UsuarioForm, self).save(commit)
 
+        # Cria telefones
+        tel = Telefone.objects.create(
+            tipo=self.data['primeiro_tipo'],
+            ddd=self.data['primeiro_ddd'],
+            numero=self.data['primeiro_numero'],
+            principal=self.data['primeiro_principal']
+        )
+        usuario.primeiro_telefone = tel
+
+        if self.cleaned_data['segundo_telefone'].numero:
+            tel = Telefone.objects.create(
+                tipo=self.data['segundo_tipo'],
+                ddd=self.data['segundo_ddd'],
+                numero=self.data['segundo_numero'],
+                principal=self.data['segundo_principal']
+            )
+            usuario.primeiro_telefone = tel
+
+        # Cria User
         u = User.objects.create(username=usuario.username, email=usuario.email)
         u.set_password(self.cleaned_data['password'])
         u.save()
@@ -106,7 +181,9 @@ class UsuarioForm(ModelForm):
 class UsuarioEditForm(UsuarioForm):
     class Meta:
         model = Usuario
-        fields = ['username', 'email', 'nome_completo', 'password']
+        fields = ['username', 'email', 'nome_completo', 'password', 'vinculo',
+                  'password_confirm', 'email_confirm', 'captcha', 'cpf', 'rg',
+                  'cargo', 'casa_legislativa']
         widgets = {'username': forms.TextInput(attrs={'readonly': 'readonly'})}
 
     def __init__(self, *args, **kwargs):
