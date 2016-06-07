@@ -1,13 +1,12 @@
-import crud.base
-from crud.base import Crud
-
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 
+import crud.base
+from crud.base import Crud
+from usuarios.models import Usuario
+
 from .forms import SistemaForm, SolicitacaoEditForm, SolicitacaoForm
 from .models import Sistema, Solicitacao
-
-from usuarios.models import Usuario
 
 
 class SolicitacaoCrud(LoginRequiredMixin, Crud):
@@ -16,7 +15,7 @@ class SolicitacaoCrud(LoginRequiredMixin, Crud):
 
     class CreateView(PermissionRequiredMixin, crud.base.CrudCreateView):
         form_class = SolicitacaoForm
-        permission_required = {'servicos.add_ticket'}
+        permission_required = {'servicos.add_solicitacao'}
 
         def get_initial(self):
             # Essa query no caso de super_user é só para nao quebrar
@@ -28,7 +27,7 @@ class SolicitacaoCrud(LoginRequiredMixin, Crud):
 
     class UpdateView(crud.base.CrudUpdateView):
         form_class = SolicitacaoEditForm
-        permission_required = {'servicos.change_ticket'}
+        permission_required = {'servicos.change_solicitacao'}
 
         @property
         def layout_key(self):

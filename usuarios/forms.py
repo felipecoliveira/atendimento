@@ -1,24 +1,16 @@
-import re
-from django.core.exceptions import ValidationError
+from datetime import datetime
 
 from captcha.fields import CaptchaField
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Button, Fieldset, Layout, Submit
+from crispy_forms.layout import Fieldset, Layout
 from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Fieldset, Layout, Submit, Button
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.core.exceptions import ValidationError
-from django.core.validators import EMPTY_VALUES, validate_email
 from django.db import transaction
-from django.forms import ModelForm, ValidationError
+from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User, Group
-from django.db import transaction
-from .models import Usuario
-from captcha.fields import CaptchaField
-from datetime import datetime
+
 import crispy_layout_mixin
 from atendimento.utils import YES_NO_CHOICES
 from crispy_layout_mixin import form_actions

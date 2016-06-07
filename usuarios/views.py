@@ -1,17 +1,18 @@
-from django.utils import timezone
-import crud.base
-from crud.base import Crud
-from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.contrib.auth.models import User, Permission
-from django.core.urlresolvers import reverse
+from django.contrib.auth.models import Permission, User
 from django.core.exceptions import PermissionDenied
-
-from .forms import (ConveniadoEditForm, UsuarioForm,
-                    UsuarioEditForm, ResponsavelEditForm)
-from .models import Usuario
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.utils import timezone
 from django.views.generic import FormView
+
+import crud.base
 from atendimento.utils import str2bool
+from crud.base import Crud
+
+from .forms import (ConveniadoEditForm, ResponsavelEditForm, UsuarioEditForm,
+                    UsuarioForm)
+from .models import Usuario
 
 
 class UsuarioCrud(Crud):
@@ -79,7 +80,8 @@ class ConveniadoView(PermissionRequiredMixin, FormView):
         if usuario.conveniado is True and usuario.responsavel is True:
             usuario.habilitado = True
             user = User.objects.get(usuario__id=usuario.id)
-            permissao = Permission.objects.get(name='Can add Ticket')
+            permissao = Permission.objects.get(
+                name='Can add Solicitação de Novo Serviço')
             user.user_permissions.add(permissao)
         usuario.save()
         return self.form_valid(form)
@@ -119,7 +121,8 @@ class ResponsavelView(PermissionRequiredMixin, FormView):
         if usuario.conveniado is True and usuario.responsavel is True:
             usuario.habilitado = True
             user = User.objects.get(usuario__id=usuario.id)
-            permissao = Permission.objects.get(name='Can add Ticket')
+            permissao = Permission.objects.get(
+                name='Can add Solicitação de Novo Serviço')
             user.user_permissions.add(permissao)
         usuario.save()
         return self.form_valid(form)
