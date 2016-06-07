@@ -246,9 +246,9 @@ class HabilitarEditForm(ModelForm):
 
     class Meta:
         model = Usuario
-        fields = ['nome_completo', 'username', 'email', 'habilitado']
+        fields = ['cpf', 'nome_completo', 'email', 'habilitado']
         widgets = {
-            'username': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'cpf': forms.TextInput(attrs={'readonly': 'readonly'}),
             'nome_completo': forms.TextInput(attrs={'readonly': 'readonly'}),
             'email': forms.TextInput(attrs={'readonly': 'readonly'})
         }
@@ -256,8 +256,8 @@ class HabilitarEditForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(HabilitarEditForm, self).__init__(*args, **kwargs)
         row1 = crispy_layout_mixin.to_row(
-            [('username', 4),
-             ('nome_completo', 4),
+            [('nome_completo', 4),
+             ('cpf', 4),
              ('email', 4)])
         row2 = crispy_layout_mixin.to_row([('habilitado', 12)])
         self.helper = FormHelper()
