@@ -23,10 +23,10 @@ class UsuarioCrud(Crud):
         def get_success_url(self):
             return reverse('home')
 
-    class ListView(LoginRequiredMixin, crud.base.CrudListView):
+    class ListView(crud.base.CrudListView):
         pass
 
-    class UpdateView(LoginRequiredMixin, crud.base.CrudUpdateView):
+    class UpdateView(crud.base.CrudUpdateView):
         form_class = UsuarioEditForm
 
         def get_initial(self):
@@ -47,7 +47,7 @@ class UsuarioCrud(Crud):
 
             return self.initial.copy()
 
-    class DetailView(LoginRequiredMixin, crud.base.CrudDetailView):
+    class DetailView(crud.base.CrudDetailView):
 
         def get_context_data(self, **kwargs):
             context = super(DetailView, self).get_context_data(**kwargs)
@@ -74,7 +74,7 @@ class UsuarioCrud(Crud):
                             'data_ultima_atualizacao']
 
 
-class HabilitarDetailView(LoginRequiredMixin, crud.base.CrudDetailView):
+class HabilitarDetailView(crud.base.CrudDetailView):
     template_name = "usuarios/habilitar_detail.html"
 
     def get(self, request, *args, **kwargs):
@@ -84,7 +84,7 @@ class HabilitarDetailView(LoginRequiredMixin, crud.base.CrudDetailView):
         return self.render_to_response(context)
 
 
-class HabilitarEditView(LoginRequiredMixin, FormView):
+class HabilitarEditView(FormView):
     template_name = "crud/form.html"
 
     def get(self, request, *args, **kwargs):
