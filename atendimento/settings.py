@@ -127,8 +127,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # captcha config
-CAPTCHA_IMAGE_SIZE=(130,30)
-CAPTCHA_FONT_SIZE=30
+CAPTCHA_IMAGE_SIZE = (130, 30)
+CAPTCHA_FONT_SIZE = 30
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

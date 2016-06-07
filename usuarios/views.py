@@ -1,8 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import DetailView, FormView, UpdateView
-from django.views.generic.edit import FormMixin
+from django.views.generic import DetailView, FormView
 
 import crud.base
 from atendimento.utils import str2bool

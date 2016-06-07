@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
-from atendimento.utils import SEXO_CHOICES, UF, YES_NO_CHOICES
+from atendimento.utils import UF, YES_NO_CHOICES
 
 
 class CasaLegislativa(models.Model):
