@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
 from usuarios.models import Usuario
 
 
@@ -20,8 +21,8 @@ class Sistema(models.Model):
         return "%s - %s" % (self.sigla, self.nome)
 
 
-class Ticket(models.Model):
-    codigo = models.PositiveIntegerField()
+class Solicitacao(models.Model):
+    codigo = models.PositiveIntegerField(unique=True)
     usuario = models.ForeignKey(Usuario)
     sistema = models.ForeignKey(Sistema)
     titulo = models.CharField(verbose_name=_('Título'), max_length=100)
@@ -33,8 +34,9 @@ class Ticket(models.Model):
                                  verbose_name=_('Descrição'))
 
     class Meta:
-        verbose_name = _('Ticket')
-        verbose_name_plural = _('Tickets')
+        verbose_name = _('Solicitação de Novo Serviço')
+        verbose_name_plural = _('Solicitações de Novos Serviços')
+        ordering = ['data_criacao']
 
     def __str__(self):
         return "%s - %s" % (self.codigo, self.resumo)
