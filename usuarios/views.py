@@ -120,7 +120,7 @@ class ResponsavelView(PermissionRequiredMixin, FormView):
         usuario.data_ultima_atualizacao = timezone.now()
         if usuario.conveniado is True and usuario.responsavel is True:
             usuario.habilitado = True
-            user = User.objects.get(usuario__id=usuario.id)
+            user = usuario.user
             permissao = Permission.objects.get(
                 name='Can add Solicitação de Novo Serviço')
             user.user_permissions.add(permissao)

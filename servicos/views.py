@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 
@@ -18,14 +20,15 @@ class SolicitacaoCrud(LoginRequiredMixin, Crud):
         permission_required = {'servicos.add_solicitacao'}
 
         def get_initial(self):
-            # Essa query no caso de super_user é só para nao quebrar
             if self.request.user.is_superuser:
-                return {'usuario': Usuario.objects.all()[0]}
+                return {'usuario': None,
+                        'codigo': random.randint(0, 65500)}
             else:
                 return {'usuario': Usuario.objects.get(
-                    user=self.request.user.id)}
+                    user=self.request.user.id),
+                    'codigo': random.randint(0, 65500)}
 
-    class UpdateView(crud.base.CrudUpdateView):
+    class UpdateView(PermissionRequiredMixin, crud.base.CrudUpdateView):
         form_class = SolicitacaoEditForm
         permission_required = {'servicos.change_solicitacao'}
 
@@ -34,13 +37,13 @@ class SolicitacaoCrud(LoginRequiredMixin, Crud):
             return 'SolicitacaoEdit'
 
         def get_initial(self):
-            # Essa query no caso de super_user é só para nao quebrar,
-            # Deverá ser retirada no futuro
             if self.request.user.is_superuser:
-                return {'usuario': Usuario.objects.all()[0]}
+                return {'usuario': None,
+                        'codigo': random.randint(0, 65500)}
             else:
                 return {'usuario': Usuario.objects.get(
-                    user=self.request.user.id)}
+                    user=self.request.user.id),
+                    'codigo': random.randint(0, 65500)}
 
     class ListView(LoginRequiredMixin, crud.base.CrudListView):
         @property

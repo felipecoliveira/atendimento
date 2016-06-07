@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
 from .models import Sistema, Solicitacao
@@ -17,8 +18,13 @@ class SolicitacaoForm(ModelForm):
         widgets = {'codigo': forms.HiddenInput(),
                    'usuario': forms.HiddenInput()}
 
+    def clean(self):
+        import ipdb; ipdb.set_trace()
+        if 'usuario' not in self.cleaned_data:
+            raise ValidationError("Usuário não definido")
 
-class SolicitacaoEditForm(ModelForm):
+
+class SolicitacaoEditForm(SolicitacaoForm):
 
     resumo = forms.CharField(
         label='Resumo',
