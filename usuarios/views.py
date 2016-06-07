@@ -58,7 +58,7 @@ class UsuarioCrud(Crud):
 
             tel2 = context['object'].segundo_telefone or ''
             if tel2:
-                tel2 = [('Primeiro Telefone'),
+                tel2 = [('Segundo Telefone'),
                         ('[%s] - %s' % (tel2.ddd, tel2.numero))]
 
             context['telefones'] = [tel1, tel2]
