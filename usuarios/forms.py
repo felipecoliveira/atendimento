@@ -7,6 +7,7 @@ from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 # from django.core.mail import send_mail
 from django.db import transaction
@@ -155,6 +156,12 @@ class UsuarioForm(ModelForm):
         if email_existente:
             msg = _('Esse email já foi cadastrado.')
             raise ValidationError(msg)
+        # import ipdb; ipdb.set_trace()
+
+        try:
+            validate_password(self.cleaned_data['password'])
+        except ValidationError as error:
+            raise ValidationError(error)
 
         return self.cleaned_data
 
