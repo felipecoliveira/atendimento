@@ -19,7 +19,6 @@ class SolicitacaoForm(ModelForm):
                    'usuario': forms.HiddenInput()}
 
     def clean(self):
-        import ipdb; ipdb.set_trace()
         if 'usuario' not in self.cleaned_data:
             raise ValidationError("Usuário não definido")
 

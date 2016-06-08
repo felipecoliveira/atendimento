@@ -2,14 +2,26 @@ from django.contrib.auth.models import Group, Permission
 
 
 def cria_grupos_permissoes():
-    Group.objects.create(name="Usuário Comum")
-    Group.objects.create(name="COTIN")
-    Group.objects.create(name="COADFI")
-    Group.objects.create(name="COPLAF")
 
-    cotin = Group.objects.get(name='COTIN')
-    coplaf = Group.objects.get(name='COPLAF')
-    coadfi = Group.objects.get(name='COADFI')
+    if not Group.objects.filter(name="Usuário Comum"):
+        usuario_comum = Group.objects.create(name="Usuário Comum")
+    else:
+        usuario_comum = Group.objects.get(name="Usuário Comum")
+
+    if not Group.objects.filter(name="COTIN"):
+        cotin = Group.objects.create(name="COTIN")
+    else:
+        cotin = Group.objects.get(name="COTIN")
+
+    if not Group.objects.filter(name="COPLAF"):
+        coplaf = Group.objects.create(name="COPLAF")
+    else:
+        coplaf = Group.objects.get(name="COPLAF")
+
+    if not Group.objects.filter(name="COADFI"):
+        coadfi = Group.objects.create(name="COADFI")
+    else:
+        coadfi = Group.objects.get(name="COADFI")
 
     permissao_add_usuario = Permission.objects.get(name="Can add Usuário")
     permissao_edit_usuario = Permission.objects.get(name="Can change Usuário")
