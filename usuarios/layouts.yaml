@@ -14,8 +14,8 @@ Subsecretaria:
 
 Usuario:
   Usuário:
-  - username password password_confirm
-  - nome_completo email email_confirm
+  - username nome_completo:9
+  - email email_confirm
   - cpf rg casa_legislativa
   - cargo vinculo
   Primeiro Telefone:

@@ -191,16 +191,20 @@ class UsuarioForm(ModelForm):
 
 
 class UsuarioEditForm(UsuarioForm):
+
     class Meta:
         model = Usuario
-        fields = ['username', 'email', 'nome_completo', 'password', 'vinculo',
-                  'password_confirm', 'email_confirm', 'captcha', 'cpf', 'rg',
+        fields = ['username', 'email', 'nome_completo', 'vinculo',
+                  'email_confirm', 'captcha', 'cpf', 'rg',
                   'cargo', 'casa_legislativa']
         widgets = {'username': forms.TextInput(attrs={'readonly': 'readonly'})}
+
 
     def __init__(self, *args, **kwargs):
         super(UsuarioEditForm, self).__init__(*args, **kwargs)
         self.fields['email_confirm'].initial = self.instance.email
+        self.fields.pop('password')
+        self.fields.pop('password_confirm')
 
 
     def valida_email_existente(self):
@@ -212,8 +216,31 @@ class UsuarioEditForm(UsuarioForm):
                     user__username=self.cleaned_data['username']).exists()
 
 
+    def clean(self):
+        import ipdb; ipdb.set_trace()
+
+        if ('email' not in self.cleaned_data or
+                'email_confirm' not in self.cleaned_data):
+            raise ValidationError(_('Favor informar endereços de email'))
+
+        msg = _('Os emails não conferem.')
+        self.valida_igualdade(
+            self.cleaned_data['email'],
+            self.cleaned_data['email_confirm'],
+            msg)
+
+        email_existente = self.valida_email_existente()
+
+        if email_existente:
+            msg = _('Esse email já foi cadastrado.')
+            raise ValidationError(msg)
+
+        return self.cleaned_data
+
+
     @transaction.atomic
     def save(self, commit=False):
+
         usuario = super(UsuarioForm, self).save(commit)
 
         # Primeiro telefone
@@ -251,7 +278,6 @@ class UsuarioEditForm(UsuarioForm):
         # User
         u = usuario.user
         u.email = usuario.email
-        u.set_password(self.cleaned_data['password'])
         u.save()
 
         usuario.data_ultima_atualizacao = datetime.now()
