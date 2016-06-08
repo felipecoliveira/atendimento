@@ -36,7 +36,7 @@ def cria_grupos_permissoes():
             name="User can change habilitado field")
 
     permissao_coadfi = Permission.objects.get(
-        name="User can change responsavel field")
+        name="Can change responsavel field")
 
     coplaf.permissions.add(permissao_add_usuario)
     coplaf.permissions.add(permissao_edit_usuario)

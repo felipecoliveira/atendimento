@@ -8,7 +8,10 @@ from atendimento.utils import UF
 
 
 def grupo_usuario_comum():
-    grupo = Group.objects.get(name='Usuário Comum')
+    try:
+        grupo = Group.objects.get(name='Usuário Comum')
+    except Group.DoesNotExist:
+        return None
     return grupo.id
 
 
