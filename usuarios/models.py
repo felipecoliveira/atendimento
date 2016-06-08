@@ -107,7 +107,7 @@ class Usuario(models.Model):
         verbose_name=_('Cargo'),
         default='--------')
     vinculo = models.CharField(
-        max_length=10,
+        max_length=30,
         verbose_name=_('Vinculo'),
         choices=TIPO_VINCULO,
         default='--------')
