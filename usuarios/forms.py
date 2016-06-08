@@ -325,5 +325,11 @@ class HabilitarEditForm(ModelForm):
         self.helper.layout = Layout(
             Fieldset(_('Editar usuário'),
                      row1, row2,
-                     form_actions(more=[Submit('Cancelar', 'Cancelar', style='background-color:black; color:white;')]))
+                     form_actions(
+                        more=[
+                            Submit(
+                                'Cancelar',
+                                'Cancelar',
+                                style='background-color:black; color:white;')])
+                     )
         )
