@@ -1,3 +1,4 @@
+from braces.views import FormValidMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.utils import timezone
@@ -7,7 +8,8 @@ import crud.base
 from atendimento.utils import str2bool
 from crud.base import Crud
 
-from .forms import HabilitarEditForm, UsuarioEditForm, UsuarioForm
+from .forms import (HabilitarEditForm, MudarSenhaForm, UsuarioEditForm,
+                    UsuarioForm)
 from .models import Usuario
 
 
@@ -108,3 +110,28 @@ class HabilitarEditView(FormView):
 
     def get_success_url(self):
         return reverse('usuarios:usuario_list')
+
+
+class MudarSenhaView(FormValidMessageMixin, FormView):
+    template_name = "crud/form.html"
+    form_class = MudarSenhaForm
+    form_valid_message = 'Senha alterada com sucesso. É necessário fazer \
+                             login novamente.'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        usuario = Usuario.objects.get(pk=self.kwargs['pk'])
+        form = MudarSenhaForm(instance=usuario)
+        context['pk'] = self.kwargs['pk']
+        context['form'] = self.get_form()
+        return self.render_to_response(context)
+
+    def form_valid(self, form):
+        usuario = Usuario.objects.get(pk=self.kwargs['pk'])
+        u = usuario.user
+        u.set_password(form.cleaned_data['password'])
+        u.save()
+        return super(MudarSenhaView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('home')

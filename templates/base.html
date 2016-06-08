@@ -32,7 +32,7 @@
                       <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }}<span class="caret"></span></a>
                       <ul class="dropdown-menu">
                         <li class="nav__sub-item"><a class="nav__sub-link" href="{% url 'usuarios:usuario_detail' usuario_pk %}">Perfil</a></li>
-                        <li class="nav__sub-item"><a class="nav__sub-link" href="">Mudar Senha</a></li>
+                        <li class="nav__sub-item"><a class="nav__sub-link" href="{% url 'usuarios:mudar_senha' usuario_pk %}">Mudar Senha</a></li>
                       </ul>
                     </li>
                     <li><a href="{% url 'usuarios:logout' %}">Sair</a></li>

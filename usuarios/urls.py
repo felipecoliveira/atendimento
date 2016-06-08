@@ -2,7 +2,8 @@ from django.conf.urls import include, url
 from django.contrib.auth.views import login, logout
 
 from usuarios.forms import LoginForm
-from usuarios.views import HabilitarDetailView, HabilitarEditView, UsuarioCrud
+from usuarios.views import (HabilitarDetailView, HabilitarEditView,
+                            MudarSenhaView, UsuarioCrud)
 
 from .apps import AppConfig
 
@@ -19,4 +20,7 @@ urlpatterns = [
         HabilitarDetailView.as_view(), name='habilitar_detail'),
     url(r'^habilitar/(?P<pk>\d+)/edit$',
         HabilitarEditView.as_view(), name='habilitar_edit'),
+    url(r'^usuario/(?P<pk>\d+)/mudar_senha$',
+        MudarSenhaView.as_view(), name='mudar_senha'),
+
 ]

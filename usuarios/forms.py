@@ -124,11 +124,9 @@ class UsuarioForm(ModelForm):
         cleaned_data['segundo_telefone'] = telefone
         return cleaned_data
 
-
     def valida_email_existente(self):
-         return Usuario.objects.filter(
+        return Usuario.objects.filter(
                 email=self.cleaned_data['email']).exists()
-
 
     def clean(self):
 
@@ -213,13 +211,11 @@ class UsuarioEditForm(UsuarioForm):
                   'cargo', 'casa_legislativa']
         widgets = {'username': forms.TextInput(attrs={'readonly': 'readonly'})}
 
-
     def __init__(self, *args, **kwargs):
         super(UsuarioEditForm, self).__init__(*args, **kwargs)
         self.fields['email_confirm'].initial = self.instance.email
         self.fields.pop('password')
         self.fields.pop('password_confirm')
-
 
     def valida_email_existente(self):
         '''Não permite atualizar emails para
@@ -229,9 +225,7 @@ class UsuarioEditForm(UsuarioForm):
                     email=self.cleaned_data['email']).exclude(
                     user__username=self.cleaned_data['username']).exists()
 
-
     def clean(self):
-        import ipdb; ipdb.set_trace()
 
         if ('email' not in self.cleaned_data or
                 'email_confirm' not in self.cleaned_data):
@@ -250,7 +244,6 @@ class UsuarioEditForm(UsuarioForm):
             raise ValidationError(msg)
 
         return self.cleaned_data
-
 
     @transaction.atomic
     def save(self, commit=False):
@@ -324,6 +317,61 @@ class HabilitarEditForm(ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Fieldset(_('Editar usuário'),
+                     row1, row2,
+                     form_actions(
+                        more=[
+                            Submit(
+                                'Cancelar',
+                                'Cancelar',
+                                style='background-color:black; color:white;')])
+                     )
+        )
+
+
+class MudarSenhaForm(ModelForm):
+
+    password = forms.CharField(
+        max_length=20,
+        label=_('Nova Senha'),
+        widget=forms.PasswordInput())
+
+    password_confirm = forms.CharField(
+        max_length=20,
+        label=_('Confirmar Nova Senha'),
+        widget=forms.PasswordInput())
+
+    captcha = CaptchaField()
+
+    def valida_igualdade(self, texto1, texto2, msg):
+        if texto1 != texto2:
+            raise ValidationError(msg)
+        return True
+
+    def clean(self):
+        if ('password' not in self.cleaned_data or
+                'password_confirm' not in self.cleaned_data):
+            raise ValidationError(_('Favor informar senhas atuais \
+                                     ou novas'))
+
+        msg = _('As senhas não conferem.')
+        self.valida_igualdade(
+            self.cleaned_data['password'],
+            self.cleaned_data['password_confirm'],
+            msg)
+
+    class Meta:
+        model = Usuario
+        fields = ['password', 'password_confirm', 'captcha']
+
+    def __init__(self, *args, **kwargs):
+        super(MudarSenhaForm, self).__init__(*args, **kwargs)
+        row1 = crispy_layout_mixin.to_row(
+            [('password', 6),
+             ('password_confirm', 6)])
+        row2 = crispy_layout_mixin.to_row([('captcha', 12)])
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(_('Mudar Senha'),
                      row1, row2,
                      form_actions(
                         more=[
