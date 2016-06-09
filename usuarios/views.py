@@ -49,6 +49,11 @@ class UsuarioCrud(Crud):
 
             return self.initial.copy()
 
+
+        @property
+        def layout_key(self):
+            return 'UsuarioEdit'
+
     class DetailView(LoginRequiredMixin, crud.base.CrudDetailView):
 
         def get_context_data(self, **kwargs):
