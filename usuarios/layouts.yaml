@@ -15,6 +15,7 @@ Subsecretaria:
 Usuario:
   Usuário:
   - username nome_completo:9
+  - password password_confirm
   - email email_confirm
   - cpf rg casa_legislativa
   - cargo vinculo
