@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import base64
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -67,6 +68,21 @@ class Telefone(models.Model):
         return '(%s) %s' % (self.ddd, self.numero)
 
 
+class ConfirmaEmail(models.Model):
+    """
+        Classe de email
+    """
+    email = models.EmailField(unique=True, verbose_name=_('Email'))
+    confirmado = models.BooleanField(default=False)
+    token = models.CharField(
+        max_length=50, verbose_name=_('Hash do Email'))
+    user_id = models.TextField(blank=True, verbose_name=_('ID do Usuário'))
+
+    class Meta:
+        verbose_name = _('Email')
+        verbose_name_plural = _('Emails')
+
+
 class Usuario(models.Model):
     '''
         Usuário cadastrado via web
@@ -89,9 +105,9 @@ class Usuario(models.Model):
         default=timezone.now)
     data_ultima_atualizacao = models.DateTimeField(
         default=timezone.now, verbose_name=_('Última atualização'))
-    email = models.EmailField(
-        unique=True,
-        verbose_name=_('Email'))
+    email = email = models.EmailField(unique=True, verbose_name=_('Email'))
+    email_confirmado = models.BooleanField(
+        default=False, verbose_name=_('Email confirmado?'))
     habilitado = models.BooleanField(
         default=False,
         verbose_name=_('Habilitado?'))

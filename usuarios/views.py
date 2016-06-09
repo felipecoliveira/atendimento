@@ -2,8 +2,7 @@ from braces.views import FormValidMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import DetailView, FormView
-
+from django.views.generic import DetailView, FormView, UpdateView
 import crud.base
 from atendimento.utils import str2bool
 from crud.base import Crud
@@ -139,3 +138,17 @@ class MudarSenhaView(FormValidMessageMixin, FormView):
 
     def get_success_url(self):
         return reverse('home')
+
+
+class ConfirmarEmailView(FormValidMessageMixin, UpdateView):
+    template_name = "crud/form.html"
+
+    def get(self, request, *args, **kwargs):
+        import ipdb; ipdb.set_trace()
+        context = {}
+        context['token'] = self.kwargs['pk']
+        context['user_id'] = Usuario.objects.get(pk=self.kwargs['pk'])
+        return self.render_to_response(context)
+
+    def get_success_url(self):
+        import ipdb; ipdb.set_trace()
