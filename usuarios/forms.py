@@ -409,8 +409,20 @@ class RecuperarSenhaForm(PasswordResetForm):
                      )
         )
 
+    def clean(self):
+        email_existente_usuario = Usuario.objects.filter(
+            email=self.cleaned_data['email'])
+        email_existente_user = User.objects.filter(
+            email=self.cleaned_data['email'])
 
-class EmailReuperacaoForm(UsuarioForm):
+        if not email_existente_usuario and not email_existente_user:
+            msg = _('Não existe nenhum usuário cadastrado com este e-mail.')
+            raise ValidationError(msg)
+
+        return self.cleaned_data
+
+
+class EmailRecuperacaoForm(UsuarioForm):
     class Meta:
         model = Usuario
         fields = ['email']

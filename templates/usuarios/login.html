@@ -23,11 +23,10 @@
                 </tr>
             </table>
           </p>
-          <a href="#">Esqueceu sua senha?</a>
         <p class="bs-component">
-          <a href="{% url 'usuarios:recuperar_senha' %}"> Esqueceu sua senha? </a>
           <input class="btn btn-success btn-sm" type="submit" value="Entrar" />
         </p>
+        <h5><a href="{% url 'usuarios:recuperar_senha' %}"> Esqueceu sua senha? </a></h5>
         <input type="hidden" name="next" value="{{ next }}" />
       </form>
       </div>
