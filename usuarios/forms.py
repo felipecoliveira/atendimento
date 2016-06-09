@@ -77,6 +77,7 @@ class UsuarioForm(ModelForm):
 
     email_confirm = forms.EmailField(
         required=True,
+        widget=forms.TextInput(attrs={'style': 'text-transform:lowercase;'}),
         label=_('Confirmar Email'))
 
     captcha = CaptchaField()
@@ -86,6 +87,9 @@ class UsuarioForm(ModelForm):
         fields = ['username', 'email', 'nome_completo', 'password', 'vinculo',
                   'password_confirm', 'email_confirm', 'captcha', 'cpf', 'rg',
                   'cargo', 'casa_legislativa']
+
+        widgets = {'email': forms.TextInput(
+                               attrs={'style': 'text-transform:lowercase;'}),}
 
     def __init__(self, *args, **kwargs):
         super(UsuarioForm, self).__init__(*args, **kwargs)
@@ -216,7 +220,10 @@ class UsuarioEditForm(UsuarioForm):
         fields = ['username', 'email', 'nome_completo', 'vinculo',
                   'email_confirm', 'captcha', 'cpf', 'rg',
                   'cargo', 'casa_legislativa']
-        widgets = {'username': forms.TextInput(attrs={'readonly': 'readonly'})}
+        widgets = {'username': forms.TextInput(attrs={'readonly': 'readonly'}),
+                  'email': forms.TextInput(
+                                 attrs={'style': 'text-transform:lowercase;'}),
+                  }
 
     def __init__(self, *args, **kwargs):
         super(UsuarioEditForm, self).__init__(*args, **kwargs)
