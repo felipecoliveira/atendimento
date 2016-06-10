@@ -13,7 +13,8 @@ class SolicitacaoForm(ModelForm):
 
     class Meta:
         model = Solicitacao
-        fields = ['codigo', 'usuario', 'sistema', 'titulo', 'resumo']
+        fields = ['codigo', 'usuario', 'sistema',
+                  'casa_legislativa', 'titulo', 'resumo']
         widgets = {'codigo': forms.HiddenInput(),
                    'usuario': forms.HiddenInput()}
 
@@ -27,7 +28,8 @@ class SolicitacaoEditForm(ModelForm):
 
     class Meta:
         model = Solicitacao
-        fields = ['codigo', 'usuario', 'sistema', 'titulo', 'resumo']
+        fields = ['codigo', 'usuario', 'sistema',
+                  'casa_legislativa', 'titulo', 'resumo']
         widgets = {'codigo': forms.TextInput(attrs={'readonly': 'readonly'}),
                    'usuario': forms.HiddenInput()}
 

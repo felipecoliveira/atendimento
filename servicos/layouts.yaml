@@ -9,6 +9,7 @@ Solicitacao:
     - codigo
     - usuario
     - sistema
+    - casa_legislativa
     - titulo
     - resumo
 
