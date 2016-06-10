@@ -26,5 +26,6 @@ SolicitacaoList:
     - codigo
     - usuario
     - sistema
+    - casa_legislativa
     - titulo
     - data_criacao
