@@ -49,7 +49,6 @@ class UsuarioCrud(Crud):
 
             return self.initial.copy()
 
-
         @property
         def layout_key(self):
             return 'UsuarioEdit'

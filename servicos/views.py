@@ -19,8 +19,11 @@ class SolicitacaoCrud(LoginRequiredMixin, Crud):
 
         def get_initial(self):
             usuario = Usuario.objects.get(user=self.request.user)
-            initial = {'codigo': random.randint(0, 65500), 'usuario': usuario}
-            return initial
+            self.initial['usuario'] = usuario
+            self.initial['codigo'] = random.randint(0, 65500)
+            self.initial['email_contato'] = usuario.email
+            self.initial['telefone_contato'] = usuario.primeiro_telefone
+            return self.initial.copy()
 
     class UpdateView(LoginRequiredMixin, crud.base.CrudUpdateView):
         form_class = SolicitacaoEditForm

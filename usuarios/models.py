@@ -63,6 +63,9 @@ class Telefone(models.Model):
         verbose_name = _('Telefone')
         verbose_name_plural = _('Telefones')
 
+    def __str__(self):
+        return '(%s) %s' % (self.ddd, self.numero)
+
 
 class Usuario(models.Model):
     '''
