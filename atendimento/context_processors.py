@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from django.core.exceptions import ObjectDoesNotExist
 
 from usuarios.models import Usuario
@@ -18,5 +19,5 @@ def recupera_usuario(request):
 
 
 def usuario_context(request):
-    context = {'usuario_pk': recupera_usuario(request)}
+    context = {u'usuario_pk': recupera_usuario(request)}
     return context

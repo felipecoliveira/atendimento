@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from braces.views import FormMessagesMixin
 from django.conf.urls import url
 from django.core.urlresolvers import reverse
@@ -11,31 +12,31 @@ from atendimento.utils import make_pagination
 from crispy_layout_mixin import CrispyLayoutFormMixin, get_field_display
 
 LIST, CREATE, DETAIL, UPDATE, DELETE = \
-    'list', 'create', 'detail', 'update', 'delete'
+    u'list', u'create', u'detail', u'update', u'delete'
 
 
 def _form_invalid_message(msg):
-    return '%s %s' % (_('Formulário inválido.'), msg)
+    return u'%s %s' % (_(u'Formulário inválido.'), msg)
 
-FORM_MESSAGES = {CREATE: (_('Registro criado com sucesso!'),
-                          _('O registro não foi criado.')),
-                 UPDATE: (_('Registro alterado com sucesso!'),
-                          _('Suas alterações não foram salvas.')),
-                 DELETE: (_('Registro excluído com sucesso!'),
-                          _('O registro não foi excluído.'))}
-FORM_MESSAGES = {k: (a, _form_invalid_message(b))
-                 for k, (a, b) in FORM_MESSAGES.items()}
+FORM_MESSAGES = {CREATE: (_(u'Registro criado com sucesso!'),
+                          _(u'O registro não foi criado.')),
+                 UPDATE: (_(u'Registro alterado com sucesso!'),
+                          _(u'Suas alterações não foram salvas.')),
+                 DELETE: (_(u'Registro excluído com sucesso!'),
+                          _(u'O registro não foi excluído.'))}
+FORM_MESSAGES = dict((k, (a, _form_invalid_message(b)))
+                 for k, (a, b) in FORM_MESSAGES.items())
 
 
 class CrudBaseMixin(CrispyLayoutFormMixin):
 
     @classmethod
     def url_name(cls, suffix):
-        return '%s_%s' % (cls.model._meta.model_name, suffix)
+        return u'%s_%s' % (cls.model._meta.model_name, suffix)
 
     def resolve_url(self, suffix, args=None):
         namespace = self.model._meta.app_label
-        return reverse('%s:%s' % (namespace, self.url_name(suffix)),
+        return reverse(u'%s:%s' % (namespace, self.url_name(suffix)),
                        args=args)
 
     @property
@@ -60,8 +61,8 @@ class CrudBaseMixin(CrispyLayoutFormMixin):
 
     def get_template_names(self):
         names = super(CrudBaseMixin, self).get_template_names()
-        names.append("crud/%s.html" %
-                     self.template_name_suffix.lstrip('_'))
+        names.append(u"crud/%s.html" %
+                     self.template_name_suffix.lstrip(u'_'))
         return names
 
     @property
@@ -77,10 +78,10 @@ class CrudListView(ListView):
 
     @classmethod
     def get_url_regex(cls):
-        return r'^$'
+        return ur'^$'
 
     paginate_by = 10
-    no_entries_msg = _('Nenhum registro encontrado.')
+    no_entries_msg = _(u'Nenhum registro encontrado.')
 
     def get_rows(self, object_list):
         return [self._as_row(obj) for obj in object_list]
@@ -97,21 +98,21 @@ class CrudListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(CrudListView, self).get_context_data(**kwargs)
-        context.setdefault('title', self.verbose_name_plural)
+        context.setdefault(u'title', self.verbose_name_plural)
 
         # pagination
         if self.paginate_by:
-            page_obj = context['page_obj']
-            paginator = context['paginator']
-            context['page_range'] = make_pagination(
+            page_obj = context[u'page_obj']
+            paginator = context[u'paginator']
+            context[u'page_range'] = make_pagination(
                 page_obj.number, paginator.num_pages)
 
         # rows
-        object_list = context['object_list']
-        context['headers'] = self.get_headers()
-        context['rows'] = self.get_rows(object_list)
+        object_list = context[u'object_list']
+        context[u'headers'] = self.get_headers()
+        context[u'rows'] = self.get_rows(object_list)
 
-        context['NO_ENTRIES_MSG'] = self.no_entries_msg
+        context[u'NO_ENTRIES_MSG'] = self.no_entries_msg
 
         return context
 
@@ -120,7 +121,7 @@ class CrudCreateView(FormMessagesMixin, CreateView):
 
     @classmethod
     def get_url_regex(cls):
-        return r'^create$'
+        return ur'^create$'
 
     form_valid_message, form_invalid_message = FORM_MESSAGES[CREATE]
 
@@ -132,8 +133,8 @@ class CrudCreateView(FormMessagesMixin, CreateView):
         return self.detail_url
 
     def get_context_data(self, **kwargs):
-        kwargs.setdefault('title', _('Adicionar %(verbose_name)s') % {
-            'verbose_name': self.verbose_name})
+        kwargs.setdefault(u'title', _(u'Adicionar %(verbose_name)s') % {
+            u'verbose_name': self.verbose_name})
         return super(CrudCreateView, self).get_context_data(**kwargs)
 
 
@@ -141,14 +142,14 @@ class CrudDetailView(DetailView):
 
     @classmethod
     def get_url_regex(cls):
-        return r'^(?P<pk>\d+)$'
+        return ur'^(?P<pk>\d+)$'
 
 
 class CrudUpdateView(FormMessagesMixin, UpdateView):
 
     @classmethod
     def get_url_regex(cls):
-        return r'^(?P<pk>\d+)/edit$'
+        return ur'^(?P<pk>\d+)/edit$'
 
     form_valid_message, form_invalid_message = FORM_MESSAGES[UPDATE]
 
@@ -164,7 +165,7 @@ class CrudDeleteView(FormMessagesMixin, DeleteView):
 
     @classmethod
     def get_url_regex(cls):
-        return r'^(?P<pk>\d+)/delete$'
+        return ur'^(?P<pk>\d+)/delete$'
 
     form_valid_message, form_invalid_message = FORM_MESSAGES[DELETE]
 
@@ -176,14 +177,14 @@ class CrudDeleteView(FormMessagesMixin, DeleteView):
         return self.list_url
 
 
-class Crud:
+class Crud(object):
     BaseMixin = CrudBaseMixin
     ListView = CrudListView
     CreateView = CrudCreateView
     DetailView = CrudDetailView
     UpdateView = CrudUpdateView
     DeleteView = CrudDeleteView
-    help_path = ''
+    help_path = u''
 
     @classonlymethod
     def get_urls(cls):
@@ -218,5 +219,5 @@ class Crud:
             model = _model
             help_path = _help_path
 
-        ModelCrud.__name__ = '%sCrud' % _model.__name__
+        ModelCrud.__name__ = u'%sCrud' % _model.__name__
         return ModelCrud

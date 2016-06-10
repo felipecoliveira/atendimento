@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -6,48 +7,48 @@ from usuarios.models import Usuario
 
 
 class Sistema(models.Model):
-    sigla = models.CharField(verbose_name=_('Sigla'), max_length=10)
-    nome = models.CharField(verbose_name=_('Nome Sistema'),
+    sigla = models.CharField(verbose_name=_(u'Sigla'), max_length=10)
+    nome = models.CharField(verbose_name=_(u'Nome Sistema'),
                             max_length=100)
     descricao = models.TextField(null=True,
                                  blank=True,
-                                 verbose_name=_('Descrição'))
+                                 verbose_name=_(u'Descrição'))
 
-    class Meta:
-        verbose_name = _('Sistema')
-        verbose_name_plural = _('Sistemas')
+    class Meta(object):
+        verbose_name = _(u'Sistema')
+        verbose_name_plural = _(u'Sistemas')
 
     def __str__(self):
-        return "%s - %s" % (self.sigla, self.nome)
+        return u"%s - %s" % (self.sigla, self.nome)
 
 
 class Solicitacao(models.Model):
     codigo = models.PositiveIntegerField(unique=True)
     usuario = models.ForeignKey(Usuario)
     sistema = models.ForeignKey(Sistema)
-    titulo = models.CharField(verbose_name=_('Título'), max_length=100)
-    resumo = models.CharField(verbose_name=_('Resumo'), max_length=50)
-    casa_legislativa = models.CharField(verbose_name=_('Casa Legislativa'),
+    titulo = models.CharField(verbose_name=_(u'Título'), max_length=100)
+    resumo = models.CharField(verbose_name=_(u'Resumo'), max_length=50)
+    casa_legislativa = models.CharField(verbose_name=_(u'Casa Legislativa'),
                                         max_length=200)
     email_contato = models.EmailField(blank=True,
                                       null=True,
-                                      verbose_name=_('Email de contato'))
+                                      verbose_name=_(u'Email de contato'))
     # Substituir por usuarios.models.Telefone?
     telefone_contato = models.CharField(max_length=15,
                                         null=True,
                                         blank=True,
-                                        verbose_name=_('Telefone de contato'))
+                                        verbose_name=_(u'Telefone de contato'))
 
     data_criacao = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('Data de criação'))
+                                        verbose_name=_(u'Data de criação'))
     descricao = models.TextField(blank=True,
                                  null=True,
-                                 verbose_name=_('Descrição'))
+                                 verbose_name=_(u'Descrição'))
 
-    class Meta:
-        verbose_name = _('Solicitação de Novo Serviço')
-        verbose_name_plural = _('Solicitações de Novos Serviços')
-        ordering = ['data_criacao']
+    class Meta(object):
+        verbose_name = _(u'Solicitação de Novo Serviço')
+        verbose_name_plural = _(u'Solicitações de Novos Serviços')
+        ordering = [u'data_criacao']
 
     def __str__(self):
-        return "%s - %s" % (self.codigo, self.resumo)
+        return u"%s - %s" % (self.codigo, self.resumo)

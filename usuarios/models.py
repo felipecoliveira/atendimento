@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
@@ -8,124 +9,124 @@ from atendimento.utils import UF, YES_NO_CHOICES
 
 
 class CasaLegislativa(models.Model):
-    nome = models.CharField(max_length=100, verbose_name=_('Nome'))
-    sigla = models.CharField(max_length=100, verbose_name=_('Sigla'))
-    endereco = models.CharField(max_length=100, verbose_name=_('Endereço'))
-    cep = models.CharField(max_length=100, verbose_name=_('CEP'))
-    municipio = models.CharField(max_length=100, verbose_name=_('Município'))
+    nome = models.CharField(max_length=100, verbose_name=_(u'Nome'))
+    sigla = models.CharField(max_length=100, verbose_name=_(u'Sigla'))
+    endereco = models.CharField(max_length=100, verbose_name=_(u'Endereço'))
+    cep = models.CharField(max_length=100, verbose_name=_(u'CEP'))
+    municipio = models.CharField(max_length=100, verbose_name=_(u'Município'))
     uf = models.CharField(max_length=100,
                           choices=UF,
-                          verbose_name=_('UF'))
+                          verbose_name=_(u'UF'))
     telefone = models.CharField(
-        max_length=100, blank=True, verbose_name=_('Telefone'))
+        max_length=100, blank=True, verbose_name=_(u'Telefone'))
     endereco_web = models.URLField(
-        max_length=100, blank=True, verbose_name=_('HomePage'))
+        max_length=100, blank=True, verbose_name=_(u'HomePage'))
     email = models.EmailField(
-        max_length=100, blank=True, verbose_name=_('E-mail'))
+        max_length=100, blank=True, verbose_name=_(u'E-mail'))
 
-    class Meta:
-        verbose_name = _('Casa Legislativa')
-        verbose_name_plural = _('Casas Legislativas')
+    class Meta(object):
+        verbose_name = _(u'Casa Legislativa')
+        verbose_name_plural = _(u'Casas Legislativas')
 
     def __str__(self):
-        return '[%s] %s' % (self.sigla, self.nome)
+        return u'[%s] %s' % (self.sigla, self.nome)
 
 
 class Subsecretaria(models.Model):
 
-    nome = models.CharField(verbose_name=_('Nome'), max_length=100, null=True)
-    sigla = models.CharField(verbose_name=_('Sigla'), max_length=10, null=True)
+    nome = models.CharField(verbose_name=_(u'Nome'), max_length=100, null=True)
+    sigla = models.CharField(verbose_name=_(u'Sigla'), max_length=10, null=True)
 
-    class Meta:
-        ordering = ('nome', 'sigla')
-        verbose_name = _('Subsecretaria')
-        verbose_name_plural = _('Subsecretarias')
+    class Meta(object):
+        ordering = (u'nome', u'sigla')
+        verbose_name = _(u'Subsecretaria')
+        verbose_name_plural = _(u'Subsecretarias')
 
     def __str__(self):
-        return '[%s] %s' % (self.sigla, self.nome)
+        return u'[%s] %s' % (self.sigla, self.nome)
 
 
 class Telefone(models.Model):
-    TIPO_TELEFONE = [('FIXO', 'FIXO'), ('CELULAR', 'CELULAR')]
+    TIPO_TELEFONE = [(u'FIXO', u'FIXO'), (u'CELULAR', u'CELULAR')]
 
     tipo = models.CharField(
         max_length=7,
         choices=TIPO_TELEFONE,
-        verbose_name=_('Tipo Telefone'),)
-    ddd = models.CharField(max_length=2, verbose_name=_('DDD'))
-    numero = models.CharField(max_length=10, verbose_name=_('Número'))
+        verbose_name=_(u'Tipo Telefone'),)
+    ddd = models.CharField(max_length=2, verbose_name=_(u'DDD'))
+    numero = models.CharField(max_length=10, verbose_name=_(u'Número'))
     principal = models.CharField(
         max_length=10,
-        verbose_name=_('Telefone Principal?'),
+        verbose_name=_(u'Telefone Principal?'),
         choices=YES_NO_CHOICES)
 
-    class Meta:
-        verbose_name = _('Telefone')
-        verbose_name_plural = _('Telefones')
+    class Meta(object):
+        verbose_name = _(u'Telefone')
+        verbose_name_plural = _(u'Telefones')
 
     def __str__(self):
-        return '(%s) %s' % (self.ddd, self.numero)
+        return u'(%s) %s' % (self.ddd, self.numero)
 
 
 class Usuario(models.Model):
-    '''
+    u'''
         Usuário cadastrado via web
     '''
 
-    TIPO_VINCULO = [('Tercerizado', 'Tercerizado'),
-                    ('Efetivo', 'Efetivo'),
-                    ('Contratado', 'Contratado')]
+    TIPO_VINCULO = [(u'Tercerizado', u'Tercerizado'),
+                    (u'Efetivo', u'Efetivo'),
+                    (u'Contratado', u'Contratado')]
 
     user = models.ForeignKey(User)
     username = models.CharField(
-        verbose_name=_('Nome de Usuário'),
+        verbose_name=_(u'Nome de Usuário'),
         unique=True,
         max_length=50)
     nome_completo = models.CharField(
-        verbose_name=_('Nome Completo'),
+        verbose_name=_(u'Nome Completo'),
         max_length=128)
     data_criacao = models.DateTimeField(
-        _('Data Criação'),
+        _(u'Data Criação'),
         default=timezone.now)
     data_ultima_atualizacao = models.DateTimeField(
-        default=timezone.now, verbose_name=_('Última atualização'))
+        default=timezone.now, verbose_name=_(u'Última atualização'))
     email = models.EmailField(
         unique=True,
-        verbose_name=_('Email'))
+        verbose_name=_(u'Email'))
     habilitado = models.BooleanField(
         default=False,
-        verbose_name=_('Habilitado?'))
+        verbose_name=_(u'Habilitado?'))
     conveniado = models.BooleanField(default=False)
     responsavel = models.BooleanField(default=False)
     rg = models.CharField(
         max_length=9,
         null=True,
-        verbose_name=_('RG'))
+        verbose_name=_(u'RG'))
     cpf = models.CharField(
         max_length=11,
-        verbose_name=_('CPF'),
-        default='00000000000')
+        verbose_name=_(u'CPF'),
+        default=u'00000000000')
     cargo = models.CharField(
         max_length=30,
-        verbose_name=_('Cargo'),
-        default='--------')
+        verbose_name=_(u'Cargo'),
+        default=u'--------')
     vinculo = models.CharField(
         max_length=30,
-        verbose_name=_('Vinculo'),
+        verbose_name=_(u'Vinculo'),
         choices=TIPO_VINCULO,
-        default='--------')
+        default=u'--------')
     casa_legislativa = models.CharField(
         max_length=30,
-        verbose_name=_('Casa Legislativa'),
-        default='--------')
+        verbose_name=_(u'Casa Legislativa'),
+        default=u'--------')
     primeiro_telefone = models.ForeignKey(
-        Telefone, null=True, related_name='primeiro_telefone')
+        Telefone, null=True, related_name=u'primeiro_telefone')
     segundo_telefone = models.ForeignKey(
-        Telefone, null=True, related_name='segundo_telefone')
+        Telefone, null=True, related_name=u'segundo_telefone')
 
-    class Meta:
-        verbose_name = _('Usuário')
-        verbose_name_plural = _('Usuários')
+    class Meta(object):
+        verbose_name = _(u'Usuário')
+        verbose_name_plural = _(u'Usuários')
 
     def __str__(self):
         return self.username

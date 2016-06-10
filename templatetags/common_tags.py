@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from compressor.utils import get_class
 from django import template
 

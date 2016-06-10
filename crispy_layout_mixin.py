@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+from __future__ import division
+from __future__ import with_statement
+from __future__ import absolute_import
 from math import ceil
 from os.path import dirname, join
 
@@ -7,6 +11,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Div, Fieldset, Layout, Submit
 from django.utils import formats
 from django.utils.translation import ugettext as _
+from itertools import imap
+from io import open
 
 
 def heads_and_tails(list_of_lists):
@@ -16,11 +22,11 @@ def heads_and_tails(list_of_lists):
 
 def to_column(name_span):
     fieldname, span = name_span
-    return Div(fieldname, css_class='col-md-%d' % span)
+    return Div(fieldname, css_class=u'col-md-%d' % span)
 
 
 def to_row(names_spans):
-    return Div(*map(to_column, names_spans), css_class='row-fluid')
+    return Div(*imap(to_column, names_spans), css_class=u'row-fluid')
 
 
 def to_fieldsets(fields):
@@ -33,57 +39,59 @@ def to_fieldsets(fields):
             yield field
 
 
-def form_actions(more=[], save_label=_('Salvar')):
+def form_actions(more=[], save_label=_(u'Salvar')):
     return FormActions(
-        Submit('salvar', save_label, css_class='pull-right'), *more)
+        Submit(u'salvar', save_label, css_class=u'pull-right'), *more)
 
 
 class FormLayout(Layout):
 
-    def __init__(self, *fields, label_cancel=_('Cancelar')):
+    def __init__(self, *fields, **_3to2kwargs):
+        if 'label_cancel' in _3to2kwargs: label_cancel = _3to2kwargs['label_cancel']; del _3to2kwargs['label_cancel']
+        else: label_cancel = _(u'Cancelar')
         buttons = form_actions(more=[
-            HTML('<a href="{{ view.cancel_url }}"'
-                 ' class="btn btn-inverse">%s</a>' % label_cancel)])
+            HTML(u'<a href="{{ view.cancel_url }}"'
+                 u' class="btn btn-inverse">%s</a>' % label_cancel)])
         _fields = list(to_fieldsets(fields)) + [to_row([(buttons, 12)])]
         super(FormLayout, self).__init__(*_fields)
 
 
 def get_field_display(obj, fieldname):
     field = obj._meta.get_field(fieldname)
-    verbose_name = str(field.verbose_name)
+    verbose_name = unicode(field.verbose_name)
     if field.choices:
-        value = getattr(obj, 'get_%s_display' % fieldname)()
+        value = getattr(obj, u'get_%s_display' % fieldname)()
     else:
         value = getattr(obj, fieldname)
 
     if value is None:
-        display = ''
-    elif 'date' in str(type(value)):
-        display = formats.date_format(value, "SHORT_DATE_FORMAT")
-    elif 'bool' in str(type(value)):
-        display = _('Sim') if value else _('Não')
-    elif 'ImageFieldFile' in str(type(value)):
+        display = u''
+    elif u'date' in unicode(type(value)):
+        display = formats.date_format(value, u"SHORT_DATE_FORMAT")
+    elif u'bool' in unicode(type(value)):
+        display = _(u'Sim') if value else _(u'Não')
+    elif u'ImageFieldFile' in unicode(type(value)):
         if value:
-            display = '<img src="{}" />'.format(value.url)
+            display = u'<img src="{}" />'.format(value.url)
         else:
-            display = ''
-    elif 'FieldFile' in str(type(value)):
+            display = u''
+    elif u'FieldFile' in unicode(type(value)):
         if value:
-            display = '<a href="{}">{}</a>'.format(
+            display = u'<a href="{}">{}</a>'.format(
                 value.url,
-                value.name.split('/')[-1:][0])
+                value.name.split(u'/')[-1:][0])
         else:
-            display = ''
+            display = u''
     else:
-        display = str(value)
+        display = unicode(value)
     return verbose_name, display
 
 
-class CrispyLayoutFormMixin:
+class CrispyLayoutFormMixin(object):
 
     @property
     def layout_key(self):
-        if hasattr(super(CrispyLayoutFormMixin, self), 'layout_key'):
+        if hasattr(super(CrispyLayoutFormMixin, self), u'layout_key'):
             return super(CrispyLayoutFormMixin, self).layout_key
         else:
             return self.model.__name__
@@ -91,15 +99,15 @@ class CrispyLayoutFormMixin:
     def get_layout(self):
         filename = join(
             dirname(self.model._meta.app_config.models_module.__file__),
-            'layouts.yaml')
+            u'layouts.yaml')
         return read_layout_from_yaml(filename, self.layout_key)
 
     @property
     def fields(self):
-        if hasattr(self, 'form_class') and self.form_class:
+        if hasattr(self, u'form_class') and self.form_class:
             return None
         else:
-            '''Returns all fields in the layout'''
+            u'''Returns all fields in the layout'''
             return [fieldname for legend_rows in self.get_layout()
                     for row in legend_rows[1:]
                     for fieldname, span in row]
@@ -117,7 +125,7 @@ class CrispyLayoutFormMixin:
 
     @property
     def list_field_names(self):
-        '''The list of field names to display on table
+        u'''The list of field names to display on table
 
         This base implementation returns the field names
         in the first fieldset of the layout.
@@ -129,18 +137,18 @@ class CrispyLayoutFormMixin:
         obj = self.get_object()
         verbose_name, text = get_field_display(obj, fieldname)
         return {
-            'id': fieldname,
-            'span': span,
-            'verbose_name': verbose_name,
-            'text': text,
+            u'id': fieldname,
+            u'span': span,
+            u'verbose_name': verbose_name,
+            u'text': text,
         }
 
     @property
     def layout_display(self):
 
         return [
-            {'legend': legend,
-             'rows': [[self.get_column(fieldname, span)
+            {u'legend': legend,
+             u'rows': [[self.get_column(fieldname, span)
                        for fieldname, span in row]
                       for row in rows]
              } for legend, rows in heads_and_tails(self.get_layout())]
@@ -148,7 +156,7 @@ class CrispyLayoutFormMixin:
 
 def read_yaml_from_file(filename):
     # TODO cache this at application level
-    with open(filename, 'r') as yamlfile:
+    with open(filename, u'r') as yamlfile:
         return rtyaml.load(yamlfile)
 
 
@@ -158,7 +166,7 @@ def read_layout_from_yaml(filename, key):
     base = yaml[key]
 
     def line_to_namespans(line):
-        split = [cell.split(':') for cell in line.split()]
+        split = [cell.split(u':') for cell in line.split()]
         namespans = [[s[0], int(s[1]) if len(s) > 1 else 0] for s in split]
         remaining = 12 - sum(s for n, s in namespans)
         nondefined = [ns for ns in namespans if not ns[1]]
@@ -167,7 +175,7 @@ def read_layout_from_yaml(filename, key):
             namespan = nondefined.pop(0)
             namespan[1] = span
             remaining = remaining - span
-        return list(map(tuple, namespans))
+        return list(imap(tuple, namespans))
 
     return [[legend] + [line_to_namespans(l) for l in lines]
             for legend, lines in base.items()]
