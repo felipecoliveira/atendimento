@@ -5,7 +5,8 @@ from django.contrib.auth.views import (login, logout, password_reset,
                                        password_reset_complete)
 
 from atendimento.settings import EMAIL_SEND_USER
-from usuarios.forms import LoginForm, RecuperarSenhaForm
+from usuarios.forms import (LoginForm, RecuperarSenhaEmailForm,
+                            RecuperacaoMudarSenhaForm)
 from usuarios.views import (HabilitarDetailView, HabilitarEditView,
                             MudarSenhaView, UsuarioCrud)
 
@@ -17,7 +18,7 @@ recuperar_email = [
     url(r'^recuperar/recuperar_senha/$',
         password_reset,
         {'template_name': 'usuarios/recuperar_senha.html',
-         'password_reset_form': RecuperarSenhaForm,
+         'password_reset_form': RecuperarSenhaEmailForm,
          'post_reset_redirect': 'usuarios:recuperar_senha_finalizado',
          'email_template_name': 'usuarios/recuperar_senha_email.html',
          'from_email': EMAIL_SEND_USER,
@@ -25,13 +26,17 @@ recuperar_email = [
         name='recuperar_senha'),
     url(r'^recuperar/recuperar_recuperar/finalizado/$',
         password_reset_done,
+        {'template_name': 'usuarios/recuperar_senha_enviado.html'},
         name='recuperar_senha_finalizado'),
     url(r'^recuperar/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
         password_reset_confirm,
-        {'post_reset_redirect': 'usuarios:recuperar_senha_completo'},
+        {'post_reset_redirect': 'usuarios:recuperar_senha_completo',
+         'template_name': 'usuarios/recuperacao_senha_form.html',
+         'set_password_form': RecuperacaoMudarSenhaForm},
         name='recuperar_senha_confirma'),
     url(r'^recuperar/completo/$',
         password_reset_complete,
+        {'template_name': 'usuarios/recuperacao_senha_completo.html'},
         name='recuperar_senha_completo'),
 ]
 
