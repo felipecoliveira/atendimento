@@ -27,6 +27,8 @@ class Solicitacao(models.Model):
     sistema = models.ForeignKey(Sistema)
     titulo = models.CharField(verbose_name=_('Título'), max_length=100)
     resumo = models.CharField(verbose_name=_('Resumo'), max_length=50)
+    casa_legislativa = models.CharField(verbose_name=_('Casa Legislativa'),
+                                        max_length=200)
     data_criacao = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('Data de criação'))
     descricao = models.TextField(blank=True,
