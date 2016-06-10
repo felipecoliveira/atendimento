@@ -14,6 +14,7 @@ class SolicitacaoForm(ModelForm):
     class Meta:
         model = Solicitacao
         fields = ['codigo', 'usuario', 'sistema',
+                  'email_contato', 'telefone_contato',
                   'casa_legislativa', 'titulo', 'resumo']
         widgets = {'codigo': forms.HiddenInput(),
                    'usuario': forms.HiddenInput()}
