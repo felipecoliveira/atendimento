@@ -5,7 +5,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Fieldset, Layout, Submit
 from django import forms
 from django.conf import settings
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -395,3 +395,51 @@ class MudarSenhaForm(ModelForm):
                                 style='background-color:black; color:white;')])
                      )
         )
+
+
+class RecuperarSenhaForm(PasswordResetForm):
+
+    def __init__(self, *args, **kwargs):
+        super(RecuperarSenhaForm, self).__init__(*args, **kwargs)
+        row1 = crispy_layout_mixin.to_row(
+            [('email', 6)])
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Fieldset(_('Recuperar Senha'),
+                     row1,
+                     form_actions(
+                        more=[
+                            Submit(
+                                'Cancelar',
+                                'Cancelar',
+                                style='background-color:black; color:white;')])
+                     )
+        )
+
+    def clean(self):
+        email_existente_usuario = Usuario.objects.filter(
+            email=self.cleaned_data['email'])
+        email_existente_user = User.objects.filter(
+            email=self.cleaned_data['email'])
+
+        if not email_existente_usuario and not email_existente_user:
+            msg = _('Não existe nenhum usuário cadastrado com este e-mail.')
+            raise ValidationError(msg)
+
+        return self.cleaned_data
+
+
+class EmailRecuperacaoForm(UsuarioForm):
+    class Meta:
+        model = Usuario
+        fields = ['email']
+
+    def clean(self):
+        email_existente = Usuario.objects.filter(
+            email=self.cleaned_data['email'])
+
+        if not email_existente:
+            msg = _('Não existe nenhum usuário cadastrado com este e-mail.')
+            raise ValidationError(msg)
+
+        return self.cleaned_data

@@ -112,7 +112,7 @@ EMAIL_HOST = config('EMAIL_HOST', cast=str)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', cast=str)
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', cast=str)
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
-
+EMAIL_SEND_USER = config('EMAIL_SEND_USER', cast=str)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
