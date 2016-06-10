@@ -70,7 +70,8 @@ target/
 
 # Others
 .env
-.bak
+*.bak
+*.back
 *~
 *.orig
 
