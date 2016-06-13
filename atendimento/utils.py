@@ -32,7 +32,7 @@ UF = [
     ('EX', 'Exterior'),
 ]
 
-YES_NO_CHOICES = [(False, _('Não')), (True, _('Sim'))]
+YES_NO_CHOICES = [(None, _('----')), (False, _('Não')), (True, _('Sim'))]
 
 
 def str2bool(v):

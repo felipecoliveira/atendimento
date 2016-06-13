@@ -21,12 +21,18 @@ class SolicitacaoCrud(LoginRequiredMixin, Crud):
 
         def get_initial(self):
             if self.request.user.is_superuser:
-                return {'usuario': None,
-                        'codigo': random.randint(0, 65500)}
+                usuario = None
+                self.initial['codigo'] = random.randint(0, 65500)
+                self.initial['email_contato'] = usuario.email
+                self.initial['telefone_contato'] = usuario.primeiro_telefone
+                
             else:
-                return {'usuario': Usuario.objects.get(
-                    user=self.request.user.id),
-                    'codigo': random.randint(0, 65500)}
+                usuario = Usuario.objects.get(user=self.request.user)
+                self.initial['usuario'] = usuario
+                self.initial['codigo'] = random.randint(0, 65500)
+                self.initial['email_contato'] = usuario.email
+                self.initial['telefone_contato'] = usuario.primeiro_telefone
+                
 
     class UpdateView(PermissionRequiredMixin, crud.base.CrudUpdateView):
         form_class = SolicitacaoEditForm

@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/1.9/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
-
 from decouple import config
 from dj_database_url import parse as db_url
 from unipath import Path
@@ -23,10 +22,10 @@ BASE_DIR = Path(__file__).ancestor(2)
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'aww-xq%lo(cuc17q!^0u@-&0&a7$=b$ua+54$l_50*z2v&tm=)'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -87,9 +86,9 @@ TEMPLATES = [
                 'django.core.context_processors.media',
                 'django.core.context_processors.static',
                 'django.contrib.messages.context_processors.messages',
-                'django.contrib.messages.context_processors.messages',
                 'atendimento.context_processors.usuario_context'
             ],
+            'debug': DEBUG
         },
     },
 ]
@@ -107,6 +106,13 @@ DATABASES = {
     )
 }
 
+# Email
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST = config('EMAIL_HOST', cast=str)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', cast=str)
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', cast=str)
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_SEND_USER = config('EMAIL_SEND_USER', cast=str)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -127,8 +133,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # captcha config
-CAPTCHA_IMAGE_SIZE=(130,30)
-CAPTCHA_FONT_SIZE=30
+CAPTCHA_IMAGE_SIZE = (130, 30)
+CAPTCHA_FONT_SIZE = 30
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/

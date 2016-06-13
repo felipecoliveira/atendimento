@@ -9,6 +9,8 @@ Solicitacao:
     - codigo
     - usuario
     - sistema
+    - casa_legislativa
+    - email_contato telefone_contato
     - titulo
     - resumo
 
@@ -25,5 +27,7 @@ SolicitacaoList:
     - codigo
     - usuario
     - sistema
+    - casa_legislativa
+    - email_contato telefone_contato    
     - titulo
     - data_criacao
