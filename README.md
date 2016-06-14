@@ -12,6 +12,7 @@ Sistema de Atendimento a Usuários Externos
   * Acessar Postrgresql para criar o banco ``atendimento`` com a role ``atendimento``::
 
       sudo su - postgres
+
       psql
 
       CREATE USER atendimento LOGIN
