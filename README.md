@@ -12,6 +12,7 @@ Sistema de Atendimento a Usuários Externos
   * Acessar Postrgresql para criar o banco ``atendimento`` com a role ``atendimento``::
 
       sudo su - postgres
+
       psql
 
       CREATE USER atendimento LOGIN
@@ -30,3 +31,8 @@ Sistema de Atendimento a Usuários Externos
 
       \q
       exit
+
+
+* **Configurar Grupos e Permissoes**:
+
+      ./manage.py shell < scripts/inicializacao_grupos_auth.py 
