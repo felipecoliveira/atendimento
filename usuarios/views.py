@@ -1,19 +1,20 @@
 from braces.views import FormValidMessageMixin
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.contrib.auth.models import Permission, User
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.utils import timezone
-from django.views.generic import FormView, UpdateView
+from django.views.generic import FormView
 from django.views.generic.edit import FormMixin
 
 import crud.base
 from atendimento.utils import str2bool
 from crud.base import Crud
 
-from .forms import (ConveniadoEditForm, MudarSenhaForm, ResponsavelEditForm, UsuarioEditForm,
-                    UsuarioForm)
+from .forms import (ConveniadoEditForm, MudarSenhaForm, ResponsavelEditForm,
+                    UsuarioEditForm, UsuarioForm)
 from .models import Usuario
 
 
@@ -28,7 +29,6 @@ class UsuarioCrud(Crud):
 
         def get_success_url(self):
             return reverse('home')
-
 
     class UpdateView(LoginRequiredMixin, crud.base.CrudUpdateView):
         form_class = UsuarioEditForm
@@ -55,9 +55,8 @@ class UsuarioCrud(Crud):
         def layout_key(self):
             return 'UsuarioEdit'
 
-
     class ListView(PermissionRequiredMixin, crud.base.CrudListView):
-        
+
         def has_permission(self):
             if self.request.user.groups.filter(name='COPLAF'):
                 perms = {'usuarios.can_change_conveniado'}
@@ -67,7 +66,6 @@ class UsuarioCrud(Crud):
                 return self.request.user.has_perms(perms)
             else:
                 return False
-
 
     class DetailView(LoginRequiredMixin, crud.base.CrudDetailView):
 
@@ -197,4 +195,3 @@ class MudarSenhaView(FormValidMessageMixin, FormView):
 
     def get_success_url(self):
         return reverse('home')
-

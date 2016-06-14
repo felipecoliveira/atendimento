@@ -11,7 +11,8 @@ from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.core.validators import EMPTY_VALUES, send_mail, validate_email
+from django.core.validators import EMPTY_VALUES, validate_email
+from django.core.mail import send_mail
 from django.db import transaction
 from django.forms import ModelForm, ValidationError
 from django.utils.translation import ugettext_lazy as _

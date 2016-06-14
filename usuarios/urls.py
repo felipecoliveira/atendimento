@@ -51,4 +51,6 @@ urlpatterns = recuperar_email + [
         ConveniadoView.as_view(), name='conveniado_edit'),
     url(r'^habilitar/responsavel/(?P<pk>\d+)/edit$',
         ResponsavelView.as_view(), name='responsavel_edit'),
+    url(r'^usuario/(?P<pk>\d+)/mudar_senha$',
+        MudarSenhaView.as_view(), name='mudar_senha'),
 ]
