@@ -15,7 +15,7 @@ from django.db import transaction
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 
-import atendimento.crispy_layout_mixin
+from atendimento import crispy_layout_mixin
 from atendimento.utils import YES_NO_CHOICES
 from atendimento.crispy_layout_mixin import form_actions
 
