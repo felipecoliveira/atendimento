@@ -4,7 +4,7 @@ import yaml
 from django import template
 from django.core.urlresolvers import reverse
 
-from sapl.settings import BASE_DIR
+from atendimento.settings import BASE_DIR
 
 register = template.Library()
 TEMPLATES_DIR = BASE_DIR.child("templates")

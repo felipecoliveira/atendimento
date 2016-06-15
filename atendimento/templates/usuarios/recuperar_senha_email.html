@@ -3,7 +3,7 @@
 
 {% trans "Clique no link abaixo para redefinir sua senha:" %}</br>
 {% block reset_link %}
-<a href="{{ protocol }}://{{ domain }}{% url 'usuarios:recuperar_senha_confirma' uidb64=uid token=token %}"> Clique aqui</a></br>
+<a href="{{ protocol }}://{{ domain }}{% url 'atendimento.usuarios:recuperar_senha_confirma' uidb64=uid token=token %}"> Clique aqui</a></br>
 {% endblock %}
 {% trans "Seu nome de usuário, caso você tenha esquecido:" %} <b>{{ user.get_username }}</b></br>
 

@@ -17,13 +17,13 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 
-import servicos.urls
-import usuarios.urls
+import atendimento.servicos.urls
+import atendimento.usuarios.urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
-    url(r'', include(servicos.urls)),
-    url(r'', include(usuarios.urls)),
+    url(r'', include(atendimento.servicos.urls)),
+    url(r'', include(atendimento.usuarios.urls)),
     url(r'^captcha/', include('captcha.urls')),
 ]

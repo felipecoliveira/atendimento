@@ -5,10 +5,10 @@ from django.contrib.auth.views import (login, logout, password_reset,
                                        password_reset_complete)
 
 from atendimento.settings import EMAIL_SEND_USER
-from usuarios.forms import (LoginForm, RecuperarSenhaEmailForm,
-                            RecuperacaoMudarSenhaForm)
-from usuarios.views import (HabilitarDetailView, HabilitarEditView,
-                            MudarSenhaView, UsuarioCrud)
+from atendimento.usuarios.forms import (LoginForm, RecuperarSenhaEmailForm,
+                                        RecuperacaoMudarSenhaForm)
+from atendimento.usuarios.views import (HabilitarDetailView, HabilitarEditView,
+                                        MudarSenhaView, UsuarioCrud)
 
 from .apps import AppConfig
 

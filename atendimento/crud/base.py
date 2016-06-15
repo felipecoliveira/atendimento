@@ -8,7 +8,8 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
 from atendimento.utils import make_pagination
-from crispy_layout_mixin import CrispyLayoutFormMixin, get_field_display
+from atendimento.crispy_layout_mixin import (CrispyLayoutFormMixin,
+                                             get_field_display)
 
 LIST, CREATE, DETAIL, UPDATE, DELETE = \
     'list', 'create', 'detail', 'update', 'delete'

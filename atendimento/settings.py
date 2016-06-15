@@ -15,7 +15,8 @@ from dj_database_url import parse as db_url
 from unipath import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = Path(__file__).ancestor(2)
+BASE_DIR = Path(__file__).ancestor(1)
+PROJECT_DIR = Path(__file__).ancestor(2)
 
 
 # Quick-start development settings - unsuitable for production
@@ -35,8 +36,8 @@ LOGIN_URL = '/login/?next='
 # Application definition
 
 ATENDIMENTO_APPS = [
-    'servicos',
-    'usuarios',
+    'atendimento.servicos',
+    'atendimento.usuarios',
 ]
 
 INSTALLED_APPS = [
@@ -76,7 +77,7 @@ ROOT_URLCONF = 'atendimento.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['atendimento/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -159,8 +160,8 @@ LOCALE_PATHS = (
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR.child("collected_static")
-STATICFILES_DIRS = (BASE_DIR.child("static"),)
+STATIC_ROOT = PROJECT_DIR.child("collected_static")
+STATICFILES_DIRS = (PROJECT_DIR.child("static"),)
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -168,14 +169,14 @@ STATICFILES_FINDERS = (
     'sass_processor.finders.CssFinder',
 )
 
-MEDIA_ROOT = BASE_DIR.child("media")
+MEDIA_ROOT = PROJECT_DIR.child("media")
 MEDIA_URL = '/media/'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap3'
 CRISPY_FAIL_SILENTLY = not DEBUG
 
-BOWER_COMPONENTS_ROOT = BASE_DIR.child("bower")
+BOWER_COMPONENTS_ROOT = PROJECT_DIR.child("bower")
 BOWER_INSTALLED_APPS = (
     'bootstrap-sass#3.3.6',
     'components-font-awesome#4.5.0',

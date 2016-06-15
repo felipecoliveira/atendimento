@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 
-from usuarios.models import Usuario
+from atendimento.usuarios.models import Usuario
 
 
 def recupera_usuario(request):

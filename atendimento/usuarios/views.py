@@ -4,9 +4,11 @@ from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.views.generic import DetailView, FormView
 
-import crud.base
+import atendimento.crud.base
 from atendimento.utils import str2bool
-from crud.base import Crud
+from atendimento.crud.base import (Crud, CrudListView, CrudCreateView,
+                                   CrudUpdateView, CrudDetailView,
+                                   CrudDeleteView, CrudBaseMixin,)
 
 from .forms import (HabilitarEditForm, MudarSenhaForm, UsuarioEditForm,
                     UsuarioForm)
@@ -17,7 +19,7 @@ class UsuarioCrud(Crud):
     model = Usuario
     help_path = ''
 
-    class CreateView(crud.base.CrudCreateView):
+    class CreateView(CrudCreateView):
         form_class = UsuarioForm
         form_valid_message = 'Cadastro realizado com sucesso. Aguarde a \
                               validação do seu perfil.'
@@ -25,10 +27,10 @@ class UsuarioCrud(Crud):
         def get_success_url(self):
             return reverse('home')
 
-    class ListView(LoginRequiredMixin, crud.base.CrudListView):
+    class ListView(LoginRequiredMixin, CrudListView):
         pass
 
-    class UpdateView(LoginRequiredMixin, crud.base.CrudUpdateView):
+    class UpdateView(LoginRequiredMixin, CrudUpdateView):
         form_class = UsuarioEditForm
 
         def get_initial(self):
@@ -53,7 +55,7 @@ class UsuarioCrud(Crud):
         def layout_key(self):
             return 'UsuarioEdit'
 
-    class DetailView(LoginRequiredMixin, crud.base.CrudDetailView):
+    class DetailView(LoginRequiredMixin, CrudDetailView):
 
         def get_context_data(self, **kwargs):
             context = super(DetailView, self).get_context_data(**kwargs)
@@ -74,13 +76,13 @@ class UsuarioCrud(Crud):
         def layout_key(self):
             return 'UsuarioDetail'
 
-    class BaseMixin(crud.base.CrudBaseMixin):
+    class BaseMixin(CrudBaseMixin):
         list_field_names = ['username', 'nome_completo',
                             'data_criacao', 'habilitado',
                             'data_ultima_atualizacao']
 
 
-class HabilitarDetailView(crud.base.CrudDetailView):
+class HabilitarDetailView(CrudDetailView):
     template_name = "usuarios/habilitar_detail.html"
 
     def get(self, request, *args, **kwargs):
