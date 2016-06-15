@@ -35,7 +35,7 @@ class CrudBaseMixin(CrispyLayoutFormMixin):
         return '%s_%s' % (cls.model._meta.model_name, suffix)
 
     def resolve_url(self, suffix, args=None):
-        namespace = self.model._meta.app_label
+        namespace = self.model._meta.app_config.name
         return reverse('%s:%s' % (namespace, self.url_name(suffix)),
                        args=args)
 
