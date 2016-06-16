@@ -113,6 +113,8 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', cast=str)
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', cast=str)
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_SEND_USER = config('EMAIL_SEND_USER', cast=str)
+# Evita ficar enviando emails sempre que testar um cadastro.
+# Ao inves disso, o conteudo e enviado para o console.
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Password validation

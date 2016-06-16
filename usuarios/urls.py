@@ -3,7 +3,6 @@ from django.contrib.auth.views import (login, logout, password_reset,
                                        password_reset_done,
                                        password_reset_confirm,
                                        password_reset_complete)
-
 from atendimento.settings import EMAIL_SEND_USER
 from usuarios.forms import (LoginForm, RecuperarSenhaEmailForm,
                             RecuperacaoMudarSenhaForm)
@@ -55,5 +54,5 @@ urlpatterns = recuperar_email + [
     url(r'^usuario/(?P<pk>\d+)/mudar_senha$',
         MudarSenhaView.as_view(), name='mudar_senha'),
     url(r'^usuario/confirmar/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})$',
-        ConfirmarEmailView.as_view(), name='confirmar_email')
+        ConfirmarEmailView.as_view(), name='confirmar_email'),
 ]

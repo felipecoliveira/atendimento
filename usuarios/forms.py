@@ -174,23 +174,6 @@ class UsuarioForm(ModelForm):
 
         return self.cleaned_data
 
-    def confirmar_email(self, confirmar_email_obj):
-        import ipdb; ipdb.set_trace()
-        kwargs = {}
-        kwargs['token'] = confirmar_email_obj.token
-        kwargs['uidb64'] = confirmar_email_obj.user_id
-        assunto = "Cadastro no Sistema de Atendimento ao Usuário"
-        mensagem = ("Este e-mail foi utilizado para fazer cadastro no " +
-                    "Sistema de Atendimento ao Usuário do Interlegis.\n" +
-                    "Caso você não tenha feito este cadastro, por favor " +
-                    "ignore esta mensagem.\n" +
-                    reverse('usuarios:confirmar_email', kwargs=kwargs))
-        remetente = settings.EMAIL_HOST_USER
-        destinatario = [confirmar_email_obj.email,
-                        settings.EMAIL_HOST_USER]
-        send_mail(assunto, mensagem, remetente, destinatario,
-                  fail_silently=False)
-
     @transaction.atomic
     def save(self, commit=False):
         usuario = super(UsuarioForm, self).save(commit)
@@ -217,18 +200,11 @@ class UsuarioForm(ModelForm):
         # Cria User
         u = User.objects.create(username=usuario.username, email=usuario.email)
         u.set_password(self.cleaned_data['password'])
+        u.is_active = False
 
         u.save()
-
-        confirmar_email = ConfirmaEmail(
-            email=u.email,
-            token=default_token_generator.make_token(u),
-            user_id=urlsafe_base64_encode(force_bytes(u.pk)))
-
-        confirmar_email.save()
         usuario.user = u
         usuario.save()
-        self.confirmar_email(confirmar_email)
 
 
 class UsuarioEditForm(UsuarioForm):
