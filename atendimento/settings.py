@@ -35,7 +35,7 @@ LOGIN_URL = '/login/?next='
 # Application definition
 
 ATENDIMENTO_APPS = [
-    'servicos',
+    'solicitacoes',
     'usuarios',
 ]
 

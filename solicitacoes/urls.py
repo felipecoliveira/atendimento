@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 
-from servicos.views import SistemaCrud, SolicitacaoCrud
+from solicitacoes.views import SistemaCrud, SolicitacaoCrud
 
 from .apps import AppConfig
 
