@@ -46,8 +46,10 @@ class SolicitacaoForm(ModelForm):
 
     @transaction.atomic
     def save(self, commit=False):
-        solicitacao = super(UsuarioForm, self).save(True)
-        open_osticket(solicitacao)
+        solicitacao = super(UsuarioForm, self).save(False)
+        osticket = open_osticket(solicitacao)
+        solicitacao.osticket = osticket
+        solicitacao.save()
         return solicitacao
 
 
