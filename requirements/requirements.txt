@@ -17,6 +17,7 @@ libsass==0.11.0
 pillow==3.2.0
 psycopg2==2.6.1
 python-decouple==3.0
+requests==2.10.0
 pytz==2016.3
 pyyaml==3.11
 rtyaml==0.0.2
