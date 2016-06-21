@@ -1,16 +1,20 @@
 from braces.views import FormValidMessageMixin
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import DetailView, FormView
-
+from django.views.generic import DetailView, FormView, TemplateView
 import crud.base
+from django.core.mail import send_mail
 from atendimento.utils import str2bool
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
 from crud.base import Crud
 
 from .forms import (HabilitarEditForm, MudarSenhaForm, UsuarioEditForm,
                     UsuarioForm)
-from .models import Usuario
+from .models import Usuario, ConfirmaEmail, User
 
 
 class UsuarioCrud(Crud):
@@ -23,6 +27,29 @@ class UsuarioCrud(Crud):
                               validação do seu perfil.'
 
         def get_success_url(self):
+            kwargs = {}
+            user = User.objects.get(email=self.request.POST.get('email'))
+            confirmar_email = ConfirmaEmail(
+                email=user.email,
+                token=default_token_generator.make_token(user),
+                user_id=urlsafe_base64_encode(force_bytes(user.pk)))
+            confirmar_email.save()
+
+            kwargs['token'] = confirmar_email.token
+            kwargs['uidb64'] = confirmar_email.user_id
+            assunto = "Cadastro no Sistema de Atendimento ao Usuário"
+            full_url = self.request.get_raw_uri(),
+            url_base = full_url[0][:full_url[0].find('usuario') - 1],
+            mensagem = ("Este e-mail foi utilizado para fazer cadastro no " +
+                        "Sistema de Atendimento ao Usuário do Interlegis.\n" +
+                        "Caso você não tenha feito este cadastro, por favor " +
+                        "ignore esta mensagem.\n" + url_base[0] +
+                        reverse('usuarios:confirmar_email', kwargs=kwargs))
+            remetente = settings.EMAIL_HOST_USER
+            destinatario = [confirmar_email.email,
+                            settings.EMAIL_HOST_USER]
+            send_mail(assunto, mensagem, remetente, destinatario,
+                      fail_silently=False)
             return reverse('home')
 
     class ListView(LoginRequiredMixin, crud.base.CrudListView):
@@ -139,3 +166,15 @@ class MudarSenhaView(FormValidMessageMixin, FormView):
 
     def get_success_url(self):
         return reverse('home')
+
+
+class ConfirmarEmailView(TemplateView):
+    template_name = "usuarios/confirma_email.html"
+
+    def get(self, request, *args, **kwargs):
+        uid = urlsafe_base64_decode(self.kwargs['uidb64'])
+        user = User.objects.get(id=uid)
+        user.is_active = True
+        user.save()
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)

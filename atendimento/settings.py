@@ -35,7 +35,7 @@ LOGIN_URL = '/login/?next='
 # Application definition
 
 ATENDIMENTO_APPS = [
-    'servicos',
+    'solicitacoes',
     'usuarios',
 ]
 
@@ -113,6 +113,13 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', cast=str)
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', cast=str)
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_SEND_USER = config('EMAIL_SEND_USER', cast=str)
+
+OSTICKET_API_KEY = config('OSTICKET_API_KEY', cast=str)
+OSTICKET_URL = config('OSTICKET_URL', cast=str)
+
+# Evita ficar enviando emails sempre que testar um cadastro.
+# Ao inves disso, o conteudo e enviado para o console.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators

@@ -9,17 +9,22 @@ from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
                                        SetPasswordForm)
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.tokens import default_token_generator
 from django.core.exceptions import ValidationError
-# from django.core.mail import send_mail
+from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.db import transaction
 from django.forms import ModelForm
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import ugettext_lazy as _
+
 
 import crispy_layout_mixin
 from atendimento.utils import YES_NO_CHOICES
 from crispy_layout_mixin import form_actions
 
-from .models import Telefone, Usuario
+from .models import Telefone, Usuario, ConfirmaEmail
 
 
 class LoginForm(AuthenticationForm):
@@ -132,7 +137,7 @@ class UsuarioForm(ModelForm):
 
     def valida_email_existente(self):
         return Usuario.objects.filter(
-                email=self.cleaned_data['email']).exists()
+            email=self.cleaned_data['email']).exists()
 
     def clean(self):
 
@@ -161,7 +166,6 @@ class UsuarioForm(ModelForm):
         if email_existente:
             msg = _('Esse email já foi cadastrado.')
             raise ValidationError(msg)
-        # import ipdb; ipdb.set_trace()
 
         try:
             validate_password(self.cleaned_data['password'])
@@ -196,22 +200,12 @@ class UsuarioForm(ModelForm):
         # Cria User
         u = User.objects.create(username=usuario.username, email=usuario.email)
         u.set_password(self.cleaned_data['password'])
-
-        # assunto = "Cadastro no Sistema de Atendimento ao Usuário"
-        # mensagem = ("Este e-mail foi utilizado para fazer cadastro no " +
-        #             "Sistema de Atendimento ao Usuário do Interlegis.\n" +
-        #             "Caso você não tenha feito este cadastro, por favor " +
-        #             "ignore esta mensagem.")
-        # remetente = settings.EMAIL_HOST_USER
-        # destinatario = [usuario.email,
-        #                 settings.EMAIL_HOST_USER]
-        # send_mail(assunto, mensagem, remetente, destinatario,
-        #           fail_silently=False)
+        u.is_active = False
 
         u.save()
-
         usuario.user = u
         usuario.save()
+        # TODO: NÃO RETORNA NADA????
 
 
 class UsuarioEditForm(UsuarioForm):
@@ -237,8 +231,8 @@ class UsuarioEditForm(UsuarioForm):
            emails existentes de outro usuário
         '''
         return Usuario.objects.filter(
-                    email=self.cleaned_data['email']).exclude(
-                    user__username=self.cleaned_data['username']).exists()
+            email=self.cleaned_data['email']).exclude(
+            user__username=self.cleaned_data['username']).exists()
 
     def clean(self):
 
@@ -331,15 +325,14 @@ class HabilitarEditForm(ModelForm):
         row2 = crispy_layout_mixin.to_row([('habilitado', 12)])
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Fieldset(_('Editar usuário'),
-                     row1, row2,
-                     form_actions(
-                        more=[
-                            Submit(
-                                'Cancelar',
-                                'Cancelar',
-                                style='background-color:black; color:white;')])
-                     )
+            Fieldset(
+                _('Editar usuário'), row1, row2, form_actions(
+                    more=[
+                        Submit(
+                            'Cancelar',
+                            'Cancelar',
+                            style='background-color:black; color:white;')])
+            )
         )
 
 
@@ -391,15 +384,15 @@ class MudarSenhaForm(ModelForm):
         row2 = crispy_layout_mixin.to_row([('captcha', 12)])
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Fieldset(_('Mudar Senha'),
-                     row1, row2,
-                     form_actions(
-                        more=[
-                            Submit(
-                                'Cancelar',
-                                'Cancelar',
-                                style='background-color:black; color:white;')])
-                     )
+            Fieldset(
+                _('Mudar Senha'), row1, row2,
+                form_actions(
+                    more=[
+                        Submit(
+                            'Cancelar',
+                            'Cancelar',
+                            style='background-color:black; color:white;')])
+            )
         )
 
 

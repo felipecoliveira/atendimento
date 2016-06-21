@@ -3,5 +3,5 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class AppConfig(apps.AppConfig):
-    name = 'servicos'
-    verbose_name = _('Serviços')
+    name = 'solicitacoes'
+    verbose_name = _('Solicitações')
